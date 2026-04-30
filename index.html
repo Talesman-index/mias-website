@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mia's | Chaque fil, une histoire tissée pour vous</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta name="description" content="Mia's, une marque d'artisanat fait main. Chaque fil, une histoire tissée pour vous. Créations au crochet de qualité premium au Bénin.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --teal: #4A9BAF;
+            --teal-light: #6DB8CC;
+            --teal-dark: #2E7A8F;
+            --black: #0A0A0A;
+            --off-white: #F5F5F0;
+            --cream: #FAF7F2;
+            --warm-gray: #E8E4DF;
+            --text-dark: #1A1A1A;
+            --text-muted: #7A7A7A;
+            
+            --font-display: 'Cormorant Garamond', serif;
+            --font-body: 'DM Sans', sans-serif;
+            
+            --nav-height: 110px;
+            --transition: all 0.3s ease;
+        }
+
+        /* RESET */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-body);
+            color: var(--text-dark);
+            background-color: var(--off-white);
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); font-weight: 400; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        button { font-family: inherit; cursor: pointer; border: none; background: none; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; height: auto; display: block; }
+
+        /* TYPOGRAPHY UTILS */
+        .italic { font-style: italic; }
+        .text-teal { color: var(--teal); }
+        .text-muted { color: var(--text-muted); }
+        .text-white { color: white; }
+
+        /* COMPONENTS */
+        .btn-primary {
+            background-color: var(--teal);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 999px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-primary:hover { background-color: var(--teal-dark); transform: translateY(-2px); }
+        .btn-ghost {
+            color: var(--text-dark);
+            padding: 12px 24px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+        }
+        .btn-ghost:hover { color: var(--teal); }
+        .btn-ghost.light { color: white; }
+        .btn-ghost.light:hover { color: var(--teal-light); }
+
+        .tag-pill {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(4px);
+        }
+
+        .section-padding { padding: 80px 5%; }
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        /* SVG ICONS */
+        .icon-leaf { width: 1.2em; height: 1.2em; fill: currentColor; }
+
+        /* NAVBAR */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            height: var(--nav-height);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+        .navbar.scrolled {
+            background-color: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        .navbar.scrolled .nav-links a { color: var(--text-dark); }
+        .navbar.scrolled .logo-text { color: var(--teal); }
+        .navbar:not(.scrolled) .site-logo { filter: brightness(0) invert(1); }
+        .navbar.scrolled .cart-btn { color: var(--text-dark); }
+        .navbar.scrolled .burger span { background-color: var(--text-dark); }
+
+        .logo { display: flex; flex-direction: column; line-height: 1; }
+        .logo-text {
+            font-family: var(--font-display);
+            font-size: 28px;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+        .logo-text svg { width: 16px; height: 16px; margin: 0 2px; color: var(--teal); }
+        .site-logo { height: 90px; width: auto; object-fit: contain; transition: var(--transition); }
+        .footer-brand .site-logo { height: 130px; margin-bottom: 16px; filter: brightness(0) invert(1); }
+
+        .nav-links { display: flex; gap: 32px; }
+        .nav-links a {
+            color: white;
+            font-size: 15px;
+            font-weight: 500;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background-color: var(--teal);
+            transition: var(--transition);
+        }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+        .nav-right { display: flex; align-items: center; gap: 24px; }
+        .cart-btn { position: relative; color: white; display: flex; align-items: center; }
+        .cart-badge {
+            position: absolute;
+            top: -8px; right: -12px;
+            background-color: var(--teal);
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; }
+        .burger span { width: 25px; height: 2px; background-color: white; transition: var(--transition); }
+        
+        .mobile-nav {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100vh;
+            background-color: var(--black);
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center; gap: 30px;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 999;
+        }
+        .mobile-nav.open { opacity: 1; pointer-events: all; }
+        .mobile-nav a { font-family: var(--font-display); font-size: 32px; color: white; }
+        .mobile-nav a.active { color: var(--teal); }
+
+        /* FOOTER */
+        footer {
+            background-color: var(--black);
+            color: white;
+            padding: 80px 5% 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-brand .logo-text { color: white; }
+        .footer-tagline { font-family: var(--font-display); font-style: italic; color: var(--text-muted); margin-top: 16px; font-size: 20px; }
+        .footer-title { font-family: var(--font-display); font-size: 20px; margin-bottom: 24px; color: var(--cream); }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: var(--text-muted); font-size: 14px; }
+        .footer-links a:hover { color: var(--teal); }
+        .footer-bottom {
+            margin-top: 60px; padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 13px; color: var(--text-muted);
+            max-width: 1200px; margin-left: auto; margin-right: auto;
+        }
+        .footer-bg-leaf {
+            position: absolute;
+            bottom: -50px; right: -50px;
+            width: 300px; height: 300px;
+            opacity: 0.03; color: white;
+            pointer-events: none;
+        }
+
+        /* PAGES */
+        .page { display: none; opacity: 0; transition: opacity 0.3s ease; min-height: 100vh; padding-top: var(--nav-height); }
+        .page.active { display: block; opacity: 1; }
+        .page#page-home { padding-top: 0; }
+
+        /* HOME PAGE */
+        .hero {
+            display: grid;
+            grid-template-columns: 55% 45%;
+            min-height: 100vh;
+            background-color: var(--black);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+        .hero-bg-image {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('images/bogdan-nesterenko-Lt8LMbCauBo-unsplash.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.55;
+            z-index: 0;
+        }
+        .hero::after {
+            content: '';
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.55);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .hero-left {
+            padding: 120px 5vw 80px 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+        .hero-title {
+            font-size: clamp(48px, 5.5vw, 80px);
+            line-height: 1.05;
+            color: white;
+            margin-bottom: 24px;
+        }
+        .hero-title span { display: block; }
+        .hero-tag {
+            font-size: 12px;
+            padding: 6px 16px;
+            width: fit-content;
+            white-space: nowrap;
+            margin-bottom: 20px;
+        }
+        .hero-sub {
+            color: var(--text-muted);
+            font-size: 18px;
+            max-width: 480px;
+            margin-bottom: 40px;
+        }
+        .hero-actions { display: flex; gap: 16px; align-items: center; }
+        .hero-actions .btn-primary { max-width: 220px; width: 100%; }
+
+        .hero-right { 
+            position: relative; 
+            overflow: hidden; 
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 48px;
+            z-index: 2;
+        }
+        .cards-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .floating-card {
+            background: white;
+            padding: 16px 24px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            display: flex; align-items: center; gap: 16px;
+            width: 280px;
+            opacity: 0;
+            transform: translateX(30px);
+            animation: revealCard 0.8s ease forwards;
+        }
+        @keyframes revealCard { to { opacity: 1; transform: translateX(0); } }
+        .fc-1 { animation-delay: 0s; }
+        .fc-2 { animation-delay: 0.15s; }
+        .fc-3 { animation-delay: 0.3s; }
+
+        .fc-img { width: 56px; height: 56px; object-fit: cover; border-radius: 10px; }
+        .fc-name { font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--text-dark); }
+        .fc-price { font-size: 14px; color: var(--teal); font-weight: 500; }
+
+        .marquee {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--teal);
+            color: white;
+            padding: 16px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            display: flex;
+            z-index: 5;
+        }
+        .marquee-content {
+            display: flex;
+            align-items: center;
+            animation: scroll 20s linear infinite;
+        }
+        .marquee-item {
+            font-family: var(--font-display);
+            font-style: italic;
+            font-size: 24px;
+            margin: 0 40px;
+            display: flex; align-items: center; gap: 40px;
+        }
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* SECTION TITLES */
+        .section-title { font-size: 48px; text-align: center; margin-bottom: 60px; color: var(--text-dark); }
+        .section-title .italic { color: var(--teal); }
+
+        /* PRODUCT CARDS */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        .product-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+            cursor: pointer;
+        }
+        .product-card:hover { transform: translateY(-8px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+        .product-img { padding: 0;
+            height: 280px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 80px;
+            position: relative;
+        }
+        .product-badge {
+            position: absolute; top: 16px; right: 16px;
+            background: white; color: var(--text-dark);
+            padding: 4px 12px; border-radius: 999px;
+            font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .product-wish {
+            position: absolute; top: 16px; left: 16px;
+            background: white; width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            color: var(--text-muted); transition: var(--transition);
+        }
+        .product-wish:hover { color: #ff4757; }
+        .product-info { padding: 24px; }
+        .product-cat { color: var(--teal); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 8px; }
+        .product-name { font-family: var(--font-display); font-size: 24px; margin-bottom: 8px; }
+        .product-desc { color: var(--text-muted); font-size: 14px; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .product-bottom { display: flex; justify-content: space-between; align-items: center; }
+        .product-price { font-weight: 700; font-size: 18px; }
+        .btn-add {
+            background: var(--off-white); width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--teal); transition: var(--transition);
+            overflow: hidden;
+        }
+        .btn-add svg { width: 20px; height: 20px; }
+        .btn-add span { display: none; font-size: 14px; font-weight: 500; margin-left: 8px; }
+        .product-card:hover .btn-add { width: 100%; border-radius: 999px; background: var(--teal); color: white; justify-content: center; }
+        .product-card:hover .btn-add span { display: inline; }
+        .product-card:hover .btn-add svg { display: none; }
+
+        /* SERVICES TEASER */
+        .services-teaser { background-color: var(--black); color: white; }
+        .st-split { display: grid; grid-template-columns: 1fr 1.5fr; gap: 60px; align-items: center; }
+        .st-title { font-size: 48px; margin-bottom: 24px; }
+        .st-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .st-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 32px; border-radius: 16px;
+            transition: var(--transition);
+        }
+        .st-card:hover { background: rgba(255,255,255,0.05); transform: translateY(-4px); border-top: 1px solid var(--teal); }
+        .st-icon { font-size: 32px; margin-bottom: 16px; }
+        .st-name { font-family: var(--font-display); font-size: 24px; margin-bottom: 8px; color: var(--cream); }
+        .st-desc { color: var(--text-muted); font-size: 14px; }
+
+        /* TESTIMONIALS */
+        .testimonials { background-color: var(--black); color: white; }
+        .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+        .testi-card {
+            background: rgba(255,255,255,0.03);
+            padding: 40px; border-radius: 16px;
+            border-left: 2px solid var(--teal);
+        }
+        .stars { color: #f1c40f; margin-bottom: 16px; letter-spacing: 2px; }
+        .quote { font-family: var(--font-display); font-style: italic; font-size: 20px; line-height: 1.6; color: var(--cream); margin-bottom: 24px; }
+        .author-name { font-weight: 600; font-size: 15px; }
+        .author-role { color: var(--text-muted); font-size: 13px; }
+
+        /* WHY MIA'S */
+        .why-mias { background-color: var(--cream); }
+        .why-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; text-align: center; }
+        .why-icon {
+            width: 64px; height: 64px; margin: 0 auto 24px;
+            background: var(--white); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--teal); font-size: 28px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+        .why-title { font-family: var(--font-display); font-size: 22px; margin-bottom: 12px; }
+        .why-desc { color: var(--text-muted); font-size: 14px; }
+
+        /* BOUTIQUE PAGE */
+        .shop-header {
+            text-align: center; padding: 60px 5%;
+            background-color: var(--cream);
+            border-bottom: 1px solid var(--warm-gray);
+        }
+        .shop-title { font-size: 56px; margin-bottom: 16px; }
+        .shop-count { color: var(--text-muted); }
+        .shop-controls {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 32px 5%; max-width: 1200px; margin: 0 auto;
+        }
+        .filters { display: flex; gap: 12px; flex-wrap: wrap; }
+        .filter-pill {
+            padding: 8px 20px; border-radius: 999px;
+            background: white; border: 1px solid var(--warm-gray);
+            font-size: 14px; color: var(--text-dark);
+            transition: var(--transition);
+        }
+        .filter-pill:hover, .filter-pill.active {
+            background: var(--teal); color: white; border-color: var(--teal);
+        }
+        .sort-select {
+            padding: 10px 16px; border-radius: 8px;
+            border: 1px solid var(--warm-gray);
+            background: white; font-family: inherit; font-size: 14px;
+            outline: none; cursor: pointer;
+        }
+        .shop-grid-container { padding: 0 5% 80px; max-width: 1200px; margin: 0 auto; }
+
+        /* SERVICES PAGE */
+        .services-hero {
+            background: var(--black); color: white;
+            text-align: center; padding: 100px 5%;
+        }
+        .services-hero .st-title { font-size: 64px; }
+        .services-hero p { color: var(--text-muted); font-size: 20px; max-width: 600px; margin: 0 auto; }
+        
+        .services-list { padding: 80px 5%; max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+        .service-detail-card {
+            display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px;
+            background: white; border-radius: 24px; overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.03);
+            transition: var(--transition); border-top: 4px solid transparent;
+        }
+        .service-detail-card:hover { transform: translateY(-4px); box-shadow: 0 30px 60px rgba(0,0,0,0.06); }
+        .sdc-visual {
+            background: var(--cream); display: flex; align-items: center; justify-content: center;
+            font-size: 100px; padding: 40px; position: relative;
+        }
+        .sdc-content { padding: 40px 40px 40px 0; }
+        .sdc-title { font-family: var(--font-display); font-size: 32px; margin-bottom: 16px; }
+        .sdc-desc { color: var(--text-muted); margin-bottom: 24px; }
+        .sdc-includes { margin-bottom: 32px; }
+        .sdc-includes li {
+            position: relative; padding-left: 24px; margin-bottom: 8px; font-size: 15px;
+        }
+        .sdc-includes li::before {
+            content: '✓'; position: absolute; left: 0; color: var(--teal); font-weight: bold;
+        }
+        .sdc-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--warm-gray); padding-top: 24px; }
+        .sdc-price { font-weight: 600; color: var(--text-dark); }
+
+        .how-it-works { background: var(--cream); padding: 80px 5%; text-align: center; }
+        .steps-container {
+            display: flex; justify-content: space-between; max-width: 1000px; margin: 60px auto 0; position: relative;
+        }
+        .steps-container::before {
+            content: ''; position: absolute; top: 32px; left: 10%; right: 10%;
+            height: 2px; border-top: 2px dashed var(--teal-light); z-index: 1;
+        }
+        .step { position: relative; z-index: 2; width: 22%; }
+        .step-num {
+            width: 64px; height: 64px; background: var(--teal); color: white;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-display); font-size: 28px; margin: 0 auto 24px;
+            box-shadow: 0 0 0 8px var(--cream);
+        }
+        .step-title { font-weight: 600; margin-bottom: 8px; }
+        .step-desc { font-size: 14px; color: var(--text-muted); }
+
+        .faq { padding: 80px 5%; max-width: 800px; margin: 0 auto; }
+        .faq-item { border-bottom: 1px solid var(--warm-gray); padding: 24px 0; }
+        .faq-q {
+            display: flex; justify-content: space-between; align-items: center;
+            font-family: var(--font-display); font-size: 22px; cursor: pointer;
+        }
+        .faq-icon { color: var(--teal); transition: var(--transition); }
+        .faq-item.active .faq-icon { transform: rotate(45deg); }
+        .faq-a {
+            max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
+            color: var(--text-muted); font-size: 15px; line-height: 1.6;
+        }
+        .faq-a-inner { padding-top: 16px; }
+
+        /* GALERIE PAGE */
+        .galerie-header { text-align: center; padding: 60px 5%; }
+        .masonry-grid {
+            column-count: 4; column-gap: 24px;
+            padding: 0 5% 80px; max-width: 1400px; margin: 0 auto;
+        }
+        .masonry-item {
+            break-inside: avoid; margin-bottom: 24px;
+            border-radius: 16px; overflow: hidden; position: relative;
+            background: var(--cream); cursor: pointer;
+        }
+        .masonry-img {
+            width: 100%; display: flex; align-items: center; justify-content: center;
+            font-size: 64px; padding: 40px;
+        }
+        .masonry-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(74, 155, 175, 0.9); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; opacity: 0; transition: var(--transition);
+            color: white;
+        }
+        .masonry-item:hover .masonry-overlay { opacity: 1; }
+        .masonry-cat { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-top: 12px; }
+
+        /* ABOUT PAGE */
+        .about-story { padding: 100px 5%; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+        .story-title { font-size: 56px; margin-bottom: 32px; }
+        .story-text p { font-size: 18px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.8; }
+        .story-visual {
+            background: var(--cream); border-radius: 24px; height: 100%; min-height: 500px;
+            position: relative; overflow: hidden;
+        }
+        .story-visual::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 10 Q40 0, 50 10 Q60 20, 50 30 Q40 40, 30 30 Q20 20, 30 10 Z' fill='%234A9BAF' fill-opacity='0.1'/%3E%3C/svg%3E");
+            animation: rotate 60s linear infinite;
+        }
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
+
+        .founder { background: var(--black); color: white; padding: 100px 5%; text-align: center; }
+        .founder-avatar {
+            width: 120px; height: 120px; background: var(--teal); color: white;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-display); font-size: 48px; margin: 0 auto 32px;
+        }
+        .founder-name { font-family: var(--font-display); font-size: 32px; margin-bottom: 8px; }
+        .founder-title { color: var(--teal-light); text-transform: uppercase; letter-spacing: 2px; font-size: 13px; margin-bottom: 40px; }
+        .founder-quote { font-family: var(--font-display); font-style: italic; font-size: 36px; max-width: 800px; margin: 0 auto; line-height: 1.4; color: var(--cream); }
+
+        .stats-bar { background: var(--teal); padding: 60px 5%; color: white; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; max-width: 1200px; margin: 0 auto; text-align: center; }
+        .stat-num { font-family: var(--font-display); font-size: 48px; margin-bottom: 8px; }
+        .stat-label { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; }
+
+        /* CONTACT PAGE */
+        .contact-wrap { display: grid; grid-template-columns: 1fr 1.5fr; min-height: calc(100vh - var(--nav-height)); }
+        .contact-info { background: var(--black); color: white; padding: 80px 10%; display: flex; flex-direction: column; justify-content: center; }
+        .ci-title { font-size: 48px; margin-bottom: 40px; }
+        .ci-item { margin-bottom: 32px; }
+        .ci-label { color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .ci-text { font-size: 18px; }
+        .ci-actions { display: flex; gap: 16px; margin-top: 40px; }
+        .btn-wa { background: #25D366; color: white; padding: 12px 24px; border-radius: 999px; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
+        
+        .contact-form-wrap { padding: 80px 10%; background: var(--cream); display: flex; flex-direction: column; justify-content: center; }
+        .form-group { margin-bottom: 24px; }
+        .form-label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 8px; color: var(--text-dark); }
+        .form-control {
+            width: 100%; padding: 16px; border-radius: 8px;
+            border: 1px solid var(--warm-gray); background: white;
+            font-family: inherit; font-size: 16px; transition: var(--transition);
+        }
+        .form-control:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(74, 155, 175, 0.1); }
+        textarea.form-control { resize: vertical; min-height: 150px; }
+        .btn-submit { width: 100%; padding: 16px; background: var(--teal); color: white; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; }
+        .btn-submit:hover { background: var(--teal-dark); }
+
+        /* CART SIDEBAR */
+        .cart-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 1050;
+            opacity: 0; pointer-events: none; transition: var(--transition);
+        }
+        .cart-sidebar {
+            position: fixed; top: 0; right: -400px; width: 400px; height: 100%;
+            background: white; z-index: 1051;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            transition: var(--transition);
+            display: flex; flex-direction: column;
+        }
+        .cart-open .cart-overlay { opacity: 1; pointer-events: all; }
+        .cart-open .cart-sidebar { right: 0; }
+        
+        .cart-header { padding: 24px; border-bottom: 1px solid var(--warm-gray); display: flex; justify-content: space-between; align-items: center; }
+        .cart-title { font-family: var(--font-display); font-size: 24px; }
+        .close-cart { font-size: 24px; color: var(--text-muted); cursor: pointer; }
+        
+        .cart-body { flex: 1; overflow-y: auto; padding: 24px; }
+        .cart-empty { text-align: center; color: var(--text-muted); margin-top: 40px; }
+        .cart-empty-icon { font-size: 64px; margin-bottom: 16px; opacity: 0.5; }
+        
+        .cart-item { display: flex; gap: 16px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--warm-gray); }
+        .ci-img { width: 80px; height: 80px; background: var(--cream); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 32px; }
+        .ci-details { flex: 1; }
+        .ci-name { font-weight: 600; margin-bottom: 4px; }
+        .ci-price { color: var(--teal); font-size: 14px; margin-bottom: 12px; }
+        .ci-controls { display: flex; justify-content: space-between; align-items: center; }
+        .qty-ctrl { display: flex; align-items: center; border: 1px solid var(--warm-gray); border-radius: 999px; overflow: hidden; }
+        .qty-btn { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background: white; }
+        .qty-btn:hover { background: var(--cream); }
+        .qty-val { width: 32px; text-align: center; font-size: 14px; font-weight: 500; }
+        .ci-remove { color: #ff4757; font-size: 13px; }
+
+        .cart-footer { padding: 24px; border-top: 1px solid var(--warm-gray); background: var(--off-white); }
+        .cart-total { display: flex; justify-content: space-between; margin-bottom: 24px; font-size: 20px; font-weight: bold; }
+        .btn-checkout { width: 100%; background: var(--teal); color: white; padding: 16px; border-radius: 8px; font-weight: 600; text-align: center; display: block; }
+        .btn-checkout:hover { background: var(--teal-dark); }
+
+        /* TOAST */
+        .toast {
+            position: fixed; bottom: -100px; right: 24px;
+            background: var(--teal); color: white;
+            padding: 16px 24px; border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(74, 155, 175, 0.3);
+            display: flex; align-items: center; gap: 12px;
+            transition: var(--transition); z-index: 1100;
+        }
+        .toast.show { bottom: 24px; }
+
+        /* MODAL */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 1050;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: var(--transition);
+        }
+        .modal {
+            background: white; width: 95%; max-width: 1100px; border-radius: 24px;
+            overflow: hidden; display: flex; flex-direction: column; transform: scale(0.95); transition: var(--transition);
+            position: relative; max-height: 95vh;
+        }
+        .modal-open .modal-overlay { opacity: 1; pointer-events: all; }
+        .modal-open .modal { transform: scale(1); }
+        .modal-close { position: absolute; top: 24px; right: 24px; width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; z-index: 2; }
+        
+        .modal-main { display: flex; flex: 1; overflow-y: auto; }
+        .modal-left { flex: 1; background: var(--cream); display: flex; min-height: 400px; }
+        .modal-img { flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .modal-img img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .promo-banner-wide {
+            background: #FFD1DC; padding: 12px 32px; display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid rgba(0,0,0,0.05); flex-wrap: wrap; gap: 12px;
+        }
+        .pb-left { display: flex; align-items: center; gap: 16px; }
+        .pb-stars { font-size: 24px; }
+        .pb-text { font-family: var(--font-body); font-size: 13px; font-weight: 600; line-height: 1.2; color: #1a1a1a; }
+        .pb-text span { font-size: 18px; font-weight: 900; color: #1a1a1a; display: block; letter-spacing: -0.5px; }
+        .pb-right { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .badge-code { background: #FFD700; color: black; border: 2px solid black; box-shadow: 2px 2px 0px black; padding: 6px 12px; font-weight: 900; font-size: 13px; letter-spacing: 1px; }
+        .badge-discount { background: white; color: black; border: 2px solid black; box-shadow: 2px 2px 0px black; padding: 6px 12px; font-weight: 900; font-size: 13px; letter-spacing: 1px; }
+        
+        .modal-content { flex: 1; padding: 48px; overflow-y: auto; background: white; }
+        .modal-cat { color: var(--text-muted); font-size: 12px; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; letter-spacing: 1px; }
+        .modal-title { font-family: var(--font-body); font-size: 32px; font-weight: 700; margin-bottom: 12px; line-height: 1.2; color: var(--text-dark); }
+        .modal-price { font-size: 28px; font-weight: 600; color: #E74C3C; margin-bottom: 4px; }
+        .modal-stock { color: #E74C3C; font-weight: 500; font-size: 14px; margin-bottom: 32px; }
+        
+        .modal-variants { margin-bottom: 32px; display: flex; flex-direction: column; gap: 24px; }
+        .variant-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 12px; color: var(--text-dark); letter-spacing: 1px; }
+        .variant-options { display: flex; gap: 12px; flex-wrap: wrap; }
+        .v-opt { padding: 8px 16px; border: 1px solid var(--warm-gray); font-size: 14px; font-weight: 500; cursor: pointer; transition: var(--transition); background: white; color: var(--text-dark); }
+        .v-opt:hover { border-color: black; }
+        .v-opt.active { border-color: black; background: black; color: white; }
+        
+        .v-color { width: 48px; height: 32px; padding: 0; cursor: pointer; border: 1px solid rgba(0,0,0,0.1); position: relative; }
+        .v-color.active { outline: 2px solid black; outline-offset: 2px; }
+        
+        .modal-actions { display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap; }
+        .modal-actions .qty-ctrl { height: 48px; border-radius: 0; border: 1px solid var(--warm-gray); flex-shrink: 0; }
+        .modal-actions .qty-btn { width: 48px; height: 100%; border-radius: 0; }
+        .modal-actions .qty-val { width: 48px; }
+        .btn-add-large { flex: 1; min-width: 200px; height: 48px; background: black; color: white; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+        .btn-add-large:hover { background: #333; }
+        
+        .product-meta { margin-bottom: 32px; display: flex; flex-direction: column; gap: 12px; }
+        .meta-item { display: flex; align-items: center; gap: 12px; color: #2ecc71; font-size: 14px; font-weight: 500; }
+        .meta-item svg { color: #2ecc71; }
+        
+        .modal-desc-title { font-size: 18px; margin-bottom: 16px; font-weight: 600; color: var(--text-dark); }
+        .modal-desc { color: var(--text-muted); line-height: 1.6; }
+        .modal-cat { color: var(--teal); font-size: 13px; text-transform: uppercase; font-weight: 600; margin-bottom: 12px; }
+        .modal-title { font-family: var(--font-display); font-size: 40px; margin-bottom: 16px; line-height: 1.1; }
+        .modal-price { font-size: 24px; font-weight: bold; margin-bottom: 24px; }
+        .modal-desc { color: var(--text-muted); line-height: 1.6; margin-bottom: 32px; }
+        .modal-actions { display: flex; gap: 16px; margin-bottom: 40px; }
+        .modal-actions .qty-ctrl { height: 48px; }
+        .modal-actions .qty-btn { width: 48px; height: 100%; }
+        .modal-actions .qty-val { width: 48px; }
+        .btn-add-large { flex: 1; background: var(--teal); color: white; border-radius: 8px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; transition: var(--transition); }
+        .btn-add-large:hover { background: var(--teal-dark); }
+
+        /* WHATSAPP FLOAT */
+        .wa-float {
+            position: fixed; bottom: 24px; left: 24px;
+            width: 60px; height: 60px; background: #25D366; color: white;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3); z-index: 1000;
+            animation: pulse 3s infinite;
+        }
+        .wa-float svg { width: 32px; height: 32px; fill: currentColor; }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .hero-title { font-size: 64px; }
+            .st-split, .contact-wrap { grid-template-columns: 1fr; }
+            .contact-info, .contact-form-wrap { padding: 60px 5%; }
+            .service-detail-card { grid-template-columns: 1fr; }
+            .sdc-visual { padding: 60px; }
+            .sdc-content { padding: 40px; }
+            .masonry-grid { column-count: 3; }
+            .about-story { grid-template-columns: 1fr; gap: 40px; }
+            .story-visual { min-height: 400px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .modal { max-height: 95vh; width: 95%; }
+            .modal-main { flex-direction: column; }
+            .modal-left { min-height: 300px; flex: none; }
+            .modal-content { padding: 32px 24px; }
+            .promo-banner-wide { padding: 20px; flex-direction: column; text-align: center; gap: 16px; }
+            .pb-left { flex-direction: column; gap: 4px; }
+            .pb-text span { font-size: 20px; }
+            .pb-right { justify-content: center; width: 100%; }
+        }
+        @media (max-width: 1023px) {
+            .hero { grid-template-columns: 1fr; height: auto; min-height: 100vh; }
+            .hero-left { padding: 120px 5% 60px; align-items: center; text-align: center; }
+            .hero-sub { margin: 0 auto 32px; }
+            .hero-actions { flex-direction: column; width: 100%; align-items: center; }
+            .hero-actions .btn-primary { max-width: none; }
+            
+            .hero-right { justify-content: center; padding: 0 5% 60px; display: flex !important; }
+            .cards-stack { 
+                flex-direction: row; overflow-x: auto; width: 100%; justify-content: center; gap: 16px;
+                scrollbar-width: none;
+            }
+            .cards-stack::-webkit-scrollbar { display: none; }
+            .fc-3 { display: none; }
+            .floating-card { width: 260px; flex-shrink: 0; transform: none; animation: revealUp 0.8s ease forwards; }
+            @keyframes revealUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        }
+        @media (max-width: 768px) {
+            .nav-links, .nav-right .btn-primary { display: none; }
+            .burger { display: flex; }
+            .hero-right { display: none !important; }
+            .hero-title { font-size: 44px; }
+            .hero-tag { margin: 0 auto 20px; }
+            
+            .why-grid, .testi-grid, .footer-grid { grid-template-columns: 1fr; }
+            .product-grid { grid-template-columns: 1fr; }
+            .st-grid { grid-template-columns: 1fr; }
+            .steps-container { flex-direction: column; align-items: center; gap: 40px; }
+            .steps-container::before { display: none; }
+            .step { width: 100%; }
+            .masonry-grid { column-count: 2; }
+            .cart-sidebar { width: 100%; right: -100%; }
+            .modal-content { padding: 24px; }
+        }
+        @media (max-width: 480px) {
+            .masonry-grid { column-count: 1; }
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+        
+        /* SCROLL ANIMATIONS */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="logo" onclick="navigate('home', event)">
+            <img src="logo_mia's.png" alt="Mia's" class="site-logo">
+        </a>
+        <div class="nav-links" id="nav-links">
+            <a href="#" onclick="navigate('home', event)" class="active">Accueil</a>
+            <a href="#" onclick="navigate('boutique', event)">Boutique</a>
+            <a href="#" onclick="navigate('services', event)">Services</a>
+            <a href="#" onclick="navigate('galerie', event)">Galerie</a>
+            <a href="#" onclick="navigate('about', event)">À propos</a>
+            <a href="#" onclick="navigate('contact', event)">Contact</a>
+        </div>
+        <div class="nav-right">
+            <button class="cart-btn" onclick="toggleCart()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                <span class="cart-badge" id="cart-badge">0</span>
+            </button>
+            <button class="btn-primary" onclick="navigate('boutique', event)">Commander</button>
+            <div class="burger" onclick="toggleMobileNav()">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBILE NAV -->
+    <div class="mobile-nav" id="mobile-nav">
+        <a href="#" onclick="navigate('home', event)">Accueil</a>
+        <a href="#" onclick="navigate('boutique', event)">Boutique</a>
+        <a href="#" onclick="navigate('services', event)">Services</a>
+        <a href="#" onclick="navigate('galerie', event)">Galerie</a>
+        <a href="#" onclick="navigate('about', event)">À propos</a>
+        <a href="#" onclick="navigate('contact', event)">Contact</a>
+    </div>
+
+    <!-- CART SIDEBAR -->
+    <div class="cart-overlay" onclick="toggleCart()"></div>
+    <div class="cart-sidebar">
+        <div class="cart-header">
+            <div class="cart-title">Votre Panier</div>
+            <div class="close-cart" onclick="toggleCart()">&times;</div>
+        </div>
+        <div class="cart-body" id="cart-items">
+            <!-- Items injected by JS -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Sous-total</span>
+                <span id="cart-total-price">0 FCFA</span>
+            </div>
+            <button class="btn-checkout" onclick="checkout()">Passer commande</button>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <span>Ajouté au panier</span>
+    </div>
+
+    <!-- MAIN APP -->
+    <main id="app">
+        <!-- PAGE 1: HOME -->
+        <div id="page-home" class="page active">
+            <section class="hero">
+                <div class="hero-bg-image"></div>
+                <div class="hero-left reveal">
+                    <div class="hero-tag tag-pill">Artisanat fait main</div>
+                    <h1 class="hero-title">
+                        Chaque fil,<br>
+                        <span class="italic text-teal">une histoire</span>
+                        tissée pour vous.
+                    </h1>
+                    <p class="hero-sub text-muted">Mia's donne vie à vos envies grâce à un savoir-faire artisanal unique. Des créations au crochet élégantes, pensées pour sublimer votre quotidien et vos événements.</p>
+                    <div class="hero-actions">
+                            <button class="btn-primary" onclick="navigate('boutique', event)">Découvrir la boutique</button>
+                            <button class="btn-ghost light" onclick="navigate('services', event)">Nos services &rarr;</button>
+                        </div>
+                    </div>
+                    <div class="hero-right">
+                        <div class="cards-stack">
+                            <div class="floating-card fc-1">
+                                <img src="images/anya-chernykh-jq0B9v_rYtg-unsplash.jpg" class="fc-img" loading="lazy" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #4A9BAF, #2E7A8F)'">
+                                <div>
+                                    <div class="fc-name">Rose Éternelle</div>
+                                    <div class="fc-price">8 500 FCFA</div>
+                                </div>
+                            </div>
+                            <div class="floating-card fc-2">
+                                <img src="images/dwayne-joe-MBi1x-HBjKA-unsplash.jpg" class="fc-img" loading="lazy" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #4A9BAF, #2E7A8F)'">
+                                <div>
+                                    <div class="fc-name">Top Bohème</div>
+                                    <div class="fc-price">15 000 FCFA</div>
+                                </div>
+                            </div>
+                            <div class="floating-card fc-3">
+                                <img src="images/maria-kovalets-RgEaD36YYGI-unsplash.jpg" class="fc-img" loading="lazy" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #4A9BAF, #2E7A8F)'">
+                                <div>
+                                    <div class="fc-name">Box Saint-Valentin</div>
+                                    <div class="fc-price">18 000 FCFA</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="marquee">
+                    <div class="marquee-content">
+                        <div class="marquee-item">Fleurs éternelles <svg viewBox="0 0 24 24" class="icon-leaf"><path d="M17 8C17 8 13 4 8 4C3 4 3 9 3 9C3 14 8 18 8 18C8 18 12 22 17 22C22 22 22 17 22 17C22 12 17 8 17 8Z" fill="currentColor"/></svg> Tenues sur mesure <svg viewBox="0 0 24 24" class="icon-leaf"><path d="M17 8C17 8 13 4 8 4C3 4 3 9 3 9C3 14 8 18 8 18C8 18 12 22 17 22C22 22 22 17 22 17C22 12 17 8 17 8Z" fill="currentColor"/></svg> Décoration d'événements <svg viewBox="0 0 24 24" class="icon-leaf"><path d="M17 8C17 8 13 4 8 4C3 4 3 9 3 9C3 14 8 18 8 18C8 18 12 22 17 22C22 22 22 17 22 17C22 12 17 8 17 8Z" fill="currentColor"/></svg> Aménagement hôtels</div>
+                        <div class="marquee-item">Fleurs éternelles <svg viewBox="0 0 24 24" class="icon-leaf"><path d="M17 8C17 8 13 4 8 4C3 4 3 9 3 9C3 14 8 18 8 18C8 18 12 22 17 22C22 22 22 17 22 17C22 12 17 8 17 8Z" fill="currentColor"/></svg> Tenues sur mesure <svg viewBox="0 0 24 24" class="icon-leaf"><path d="M17 8C17 8 13 4 8 4C3 4 3 9 3 9C3 14 8 18 8 18C8 18 12 22 17 22C22 22 22 17 22 17C22 12 17 8 17 8Z" fill="currentColor"/></svg> Décoration d'événements <svg viewBox="0 0 24 24" class="icon-leaf"><path d="M17 8C17 8 13 4 8 4C3 4 3 9 3 9C3 14 8 18 8 18C8 18 12 22 17 22C22 22 22 17 22 17C22 12 17 8 17 8Z" fill="currentColor"/></svg> Aménagement hôtels</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-padding container reveal">
+                <h2 class="section-title">Nos créations <span class="italic text-teal">phares</span></h2>
+                <div class="product-grid" id="home-featured-products">
+                    <!-- Injected by JS -->
+                </div>
+                <div style="text-align: center; margin-top: 40px;">
+                    <button class="btn-ghost" onclick="navigate('boutique', event)">Voir toute la boutique &rarr;</button>
+                </div>
+            </section>
+
+            <section class="services-teaser section-padding reveal">
+                <div class="container st-split">
+                    <div>
+                        <h2 class="st-title">Sublimez vos <span class="italic text-teal">instants.</span></h2>
+                        <p class="text-muted" style="font-size: 18px; margin-bottom: 32px;">Nous créons des ambiances uniques pour vos événements et espaces professionnels grâce à des pièces artisanales exclusives.</p>
+                        <button class="btn-primary" onclick="navigate('services', event)">Découvrir nos services</button>
+                    </div>
+                    <div class="st-grid">
+                        <div class="st-card">
+                            <div class="st-icon">💝</div>
+                            <h3 class="st-name">Saint-Valentin</h3>
+                            <p class="st-desc">Atmosphères inoubliables et décors romantiques artisanaux conçus pour célébrer l'amour.</p>
+                        </div>
+                        <div class="st-card">
+                            <div class="st-icon">🎂</div>
+                            <h3 class="st-name">Anniversaire</h3>
+                            <p class="st-desc">Thèmes uniques et personnalisés au crochet pour transformer vos fêtes en moments magiques.</p>
+                        </div>
+                        <div class="st-card">
+                            <div class="st-icon">🏨</div>
+                            <h3 class="st-name">Hôtels</h3>
+                            <p class="st-desc">Compositions murales et décoratives durables apportant prestige et chaleur à vos espaces.</p>
+                        </div>
+                        <div class="st-card">
+                            <div class="st-icon">✨</div>
+                            <h3 class="st-name">Sur mesure</h3>
+                            <p class="st-desc">Vos projets les plus audacieux prennent vie. De la conception à la réalisation textile unique.</p>
+                        </div>
+                    </div>
+            </section>
+
+            <section class="why-mias section-padding reveal">
+                <div class="container why-grid">
+                    <div>
+                        <div class="why-icon"><svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div>
+                        <h3 class="why-title">Fait main</h3>
+                        <p class="why-desc">Chaque pièce est crochetée à la main avec patience et passion.</p>
+                    </div>
+                    <div>
+                        <div class="why-icon"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+                        <h3 class="why-title">Qualité premium</h3>
+                        <p class="why-desc">Nous sélectionnons les meilleurs fils pour un rendu exceptionnel.</p>
+                    </div>
+                    <div>
+                        <div class="why-icon"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+                        <h3 class="why-title">Sur mesure</h3>
+                        <p class="why-desc">Couleurs, tailles, motifs : nous personnalisons selon vos envies.</p>
+                    </div>
+                    <div>
+                        <div class="why-icon"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+                        <h3 class="why-title">Livraison Bénin</h3>
+                        <p class="why-desc">Expédition soignée partout au Bénin et à l'international.</p>
+                    </div>
+            </section>
+
+            <section class="testimonials section-padding reveal">
+                <div class="container">
+                    <h2 class="section-title" style="color: white;">Mots <span class="italic text-teal">doux</span></h2>
+                    <div class="testi-grid">
+                        <div class="testi-card">
+                            <div class="stars">★★★★★</div>
+                            <p class="quote">"Le bouquet de roses éternelles a fait pleurer ma mère de joie. Le souci du détail est incroyable. Merci Mia's !"</p>
+                            <div class="author-name">Sarah O.</div>
+                            <div class="author-role">Cotonou</div>
+                        </div>
+                        <div class="testi-card">
+                            <div class="stars">★★★★★</div>
+                            <p class="quote">"Nous avons fait appel à Mia's pour la décoration de notre restaurant. Les couronnes murales apportent une touche si chaleureuse."</p>
+                            <div class="author-name">Hôtel Le Récif</div>
+                            <div class="author-role">Partenaire B2B</div>
+                        </div>
+                        <div class="testi-card">
+                            <div class="stars">★★★★★</div>
+                            <p class="quote">"Le top en crochet sur mesure m'allait parfaitement pour mon shooting photo. Je recommande à 100%."</p>
+                            <div class="author-name">Marie-Ange K.</div>
+                            <div class="author-role">Cliente fidèle</div>
+                        </div>
+                    </div>
+            </section>
+        </div>
+
+        <!-- PAGE 2: BOUTIQUE -->
+        <div id="page-boutique" class="page">
+            <div class="shop-header reveal">
+                <h1 class="shop-title">Notre <span class="italic text-teal">Boutique</span></h1>
+                <p class="shop-count"><span id="product-count">0</span> créations uniques</p>
+            </div>
+            
+            <div class="shop-controls reveal">
+                <div class="filters" id="shop-filters">
+                    <button class="filter-pill active" onclick="filterProducts('all')">Tout</button>
+                    <button class="filter-pill" onclick="filterProducts('Fleurs')">Fleurs</button>
+                    <button class="filter-pill" onclick="filterProducts('Tenues')">Tenues</button>
+                    <button class="filter-pill" onclick="filterProducts('Bonnets')">Bonnets & Écharpes</button>
+                    <button class="filter-pill" onclick="filterProducts('Cadeaux')">Cadeaux</button>
+                </div>
+                <select class="sort-select" onchange="sortProducts(this.value)">
+                    <option value="new">Nouveautés</option>
+                    <option value="asc">Prix croissant</option>
+                    <option value="desc">Prix décroissant</option>
+                </select>
+            </div>
+
+            <div class="shop-grid-container reveal">
+                <div class="product-grid" id="full-product-grid">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 3: SERVICES -->
+        <div id="page-services" class="page">
+            <div class="services-hero reveal">
+                <h1 class="st-title">Nos <span class="italic text-teal">Services</span></h1>
+                <p>De votre événement à vos espaces, Mia's crée l'atmosphère parfaite avec des pièces artisanales uniques.</p>
+            </div>
+
+            <div class="services-list reveal">
+                <div class="service-detail-card" style="border-top-color: #C97A72;">
+                    <div class="sdc-visual" style="padding: 0;"><img src="images/shelter-dg0uHhW0Fd4-unsplash.jpg" style="width:100%; height:100%; min-height:220px; object-fit:cover; filter: brightness(0.75);" loading="lazy" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #4A9BAF, #2E7A8F)'"></div>
+                    <div class="sdc-content">
+                        <h2 class="sdc-title">Décoration Saint-Valentin</h2>
+                        <p class="sdc-desc">Transformez votre espace en un cocon romantique inoubliable avec nos créations florales éternelles et nos setups sur mesure.</p>
+                        <ul class="sdc-includes">
+                            <li>Arche florale au crochet</li>
+                            <li>Compositions de table intimes</li>
+                            <li>Photo corner romantique</li>
+                            <li>Pétales et bougies LED</li>
+                        </ul>
+                        <div class="sdc-bottom">
+                            <span class="sdc-price">À partir de 25 000 FCFA</span>
+                            <button class="btn-primary" onclick="navigate('contact', event); document.getElementById('contact-subject').value='Devis événement';">Demander un devis</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-detail-card" style="border-top-color: var(--teal);">
+                    <div class="sdc-visual" style="padding: 0;"><img src="images/srozan-nadzmi-e_hb1Zd3nkA-unsplash.jpg" style="width:100%; height:100%; min-height:220px; object-fit:cover; filter: brightness(0.75);" loading="lazy" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #4A9BAF, #2E7A8F)'"></div>
+                    <div class="sdc-content">
+                        <h2 class="sdc-title">Décoration Anniversaire</h2>
+                        <p class="sdc-desc">Des thèmes personnalisés pour tous les âges. Ajoutez une touche poétique et originale à votre célébration.</p>
+                        <ul class="sdc-includes">
+                            <li>Thème 100% personnalisé</li>
+                            <li>Corner gâteau & photobooth</li>
+                            <li>Guirlandes au crochet</li>
+                            <li>Cadeaux invités faits main</li>
+                        </ul>
+                        <div class="sdc-bottom">
+                            <span class="sdc-price">À partir de 20 000 FCFA</span>
+                            <button class="btn-primary" onclick="navigate('contact', event); document.getElementById('contact-subject').value='Devis événement';">Demander un devis</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-detail-card" style="border-top-color: #C9A227;">
+                    <div class="sdc-visual" style="padding: 0;"><img src="images/tom-caillarec-UOYn8p-b0v8-unsplash.jpg" style="width:100%; height:100%; min-height:220px; object-fit:cover; filter: brightness(0.75);" loading="lazy" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #4A9BAF, #2E7A8F)'"></div>
+                    <div class="sdc-content">
+                        <h2 class="sdc-title">Hôtels & Espaces</h2>
+                        <p class="sdc-desc">Démarquez-vous avec une décoration d'intérieur durable, artisanale et chaleureuse pour vos lodges, restaurants ou bureaux.</p>
+                        <ul class="sdc-includes">
+                            <li>Couronnes murales géantes</li>
+                            <li>Compositions florales de table (sans entretien)</li>
+                            <li>Objets déco (paniers, coussins)</li>
+                            <li>Installation sur site</li>
+                        </ul>
+                        <div class="sdc-bottom">
+                            <span class="sdc-price">Devis personnalisé</span>
+                            <button class="btn-primary" onclick="navigate('contact', event); document.getElementById('contact-subject').value='Décoration hôtel';">Nous contacter</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="how-it-works reveal">
+                <h2 class="section-title">Comment <span class="italic text-teal">ça marche ?</span></h2>
+                <div class="steps-container">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <div class="step-title">Consultation</div>
+                        <div class="step-desc">Échange sur vos besoins, vos couleurs et le thème de votre événement.</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <div class="step-title">Devis</div>
+                        <div class="step-desc">Proposition détaillée sur mesure adaptée à votre budget.</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <div class="step-title">Création</div>
+                        <div class="step-desc">Confection minutieuse à la main de tous les éléments de décoration.</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">4</div>
+                        <div class="step-title">Livraison</div>
+                        <div class="step-desc">Installation sur place le jour J ou livraison soignée.</div>
+                    </div>
+            </section>
+
+            <section class="faq reveal">
+                <h2 class="section-title">Questions <span class="italic text-teal">fréquentes</span></h2>
+                <div class="faq-list">
+                    <div class="faq-item" onclick="this.classList.toggle('active')">
+                        <div class="faq-q">Combien de temps à l'avance dois-je réserver pour un événement ? <span class="faq-icon">+</span></div>
+                        <div class="faq-a"><div class="faq-a-inner">Idéalement, nous recommandons de nous contacter au moins 2 à 3 semaines à l'avance, car chaque pièce est réalisée à la main et nécessite un temps de confection.</div></div>
+                    </div>
+                    <div class="faq-item" onclick="this.classList.toggle('active')">
+                        <div class="faq-q">Faites-vous des installations en dehors de Cotonou ? <span class="faq-icon">+</span></div>
+                        <div class="faq-a"><div class="faq-a-inner">Oui, nous pouvons nous déplacer dans d'autres villes du Bénin sous certaines conditions. Des frais de déplacement supplémentaires s'appliqueront.</div></div>
+                    </div>
+                    <div class="faq-item" onclick="this.classList.toggle('active')">
+                        <div class="faq-q">Les fleurs en crochet nécessitent-elles un entretien ? <span class="faq-icon">+</span></div>
+                        <div class="faq-a"><div class="faq-a-inner">Non, c'est tout l'avantage ! Elles sont éternelles. Un simple dépoussiérage léger de temps en temps suffit pour conserver leur éclat.</div></div>
+                    </div>
+            </section>
+        </div>
+
+        <!-- PAGE 4: GALERIE -->
+        <div id="page-galerie" class="page">
+            <div class="galerie-header reveal">
+                <h1 class="shop-title">Notre <span class="italic text-teal">Galerie</span></h1>
+                <p class="shop-count">Inspirations et réalisations passées</p>
+                <div class="filters" style="justify-content: center; margin-top: 32px;" id="galerie-filters">
+                    <button class="filter-pill active" onclick="filterGalerie('all')">Tout</button>
+                    <button class="filter-pill" onclick="filterGalerie('Fleurs')">Fleurs</button>
+                    <button class="filter-pill" onclick="filterGalerie('Tenues')">Tenues</button>
+                    <button class="filter-pill" onclick="filterGalerie('Événements')">Événements</button>
+                </div>
+            </div>
+
+            <div class="masonry-grid reveal" id="galerie-grid">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+
+        <!-- PAGE 5: ABOUT -->
+        <div id="page-about" class="page">
+            <div class="about-story reveal">
+                <div class="story-text">
+                    <h1 class="story-title">Notre <span class="italic text-teal">histoire</span></h1>
+                    <p>Née en 2024 à Cotonou, Mia's est le fruit d'une passion inébranlable pour l'art du fil. Ce qui a commencé comme un simple passe-temps est rapidement devenu une vocation : celle de transformer une simple pelote en une émotion tangible.</p>
+                    <p>À l'ère de la production de masse, nous avons fait le choix de la lenteur assumée. Chaque boucle, chaque maille est pensée, comptée et réalisée avec amour. C'est cette attention obsessionnelle aux détails qui donne à nos créations leur supplément d'âme.</p>
+                    <p>Aujourd'hui, Mia's n'est pas seulement une marque de vêtements ou de décoration. C'est une promesse d'authenticité, une célébration du savoir-faire local béninois, et l'art d'offrir des cadeaux qui durent toute une vie.</p>
+                </div>
+                <div class="story-visual" style="padding: 0;">
+                    <img src="images/winston-olivar-martinez-OyWELMJ6b7Y-unsplash.jpg" style="width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; border-radius:24px;" loading="lazy" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #4A9BAF, #2E7A8F)'">
+                </div>
+            </div>
+
+            <div class="stats-bar reveal">
+                <div class="stats-grid">
+                    <div>
+                        <div class="stat-num">+200</div>
+                        <div class="stat-label">Créations vendues</div>
+                    </div>
+                    <div>
+                        <div class="stat-num">+50</div>
+                        <div class="stat-label">Événements décorés</div>
+                    </div>
+                    <div>
+                        <div class="stat-num">100%</div>
+                        <div class="stat-label">Fait main</div>
+                    </div>
+                    <div>
+                        <div class="stat-num">2024</div>
+                        <div class="stat-label">Année de création</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="founder reveal">
+                <div class="founder-avatar">M</div>
+                <div class="founder-name">Mia</div>
+                <div class="founder-title">Fondatrice & Créatrice</div>
+                <div class="founder-quote">"Je crée chaque pièce avec la même passion et le même soin que si c'était un cadeau destiné à mes propres proches."</div>
+            </div>
+        </div>
+
+        <!-- PAGE 6: CONTACT -->
+        <div id="page-contact" class="page">
+            <div class="contact-wrap reveal">
+                <div class="contact-info">
+                    <h1 class="ci-title">Parlons de <span class="italic text-teal">votre projet.</span></h1>
+                    
+                    <div class="ci-item">
+                        <div class="ci-label">Adresse</div>
+                        <div class="ci-text">Cotonou, Bénin</div>
+                    </div>
+                    <div class="ci-item">
+                        <div class="ci-label">Horaires d'ouverture</div>
+                        <div class="ci-text">Lundi – Samedi<br>08:00 – 19:00</div>
+                    </div>
+                    
+                    <div class="ci-actions">
+                        <a href="https://wa.me/2290151875885" target="_blank" class="btn-wa">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/></svg>
+                            WhatsApp
+                        </a>
+                        <a href="#" class="btn-ghost light">Instagram</a>
+                    </div>
+                </div>
+                
+                <div class="contact-form-wrap">
+                    <form id="contact-form" onsubmit="submitForm(event)">
+                        <div class="form-group">
+                            <label class="form-label">Nom complet</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                            <div>
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" required>
+                            </div>
+                            <div>
+                                <label class="form-label">Téléphone</label>
+                                <input type="tel" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Sujet</label>
+                            <select class="form-control" id="contact-subject" required>
+                                <option value="Commande produit">Commande produit</option>
+                                <option value="Devis événement">Devis événement</option>
+                                <option value="Décoration hôtel">Décoration hôtel</option>
+                                <option value="Autre">Autre</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Message</label>
+                            <textarea class="form-control" placeholder="Racontez-nous..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">Envoyer le message</button>
+                        <div id="form-success" style="display: none; margin-top: 16px; color: var(--teal); font-weight: 500; display: flex; align-items: center; gap: 8px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Message envoyé avec succès ! Nous vous répondrons vite.
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <img src="logo_mia's.png" alt="Mia's" class="site-logo">
+                <div class="footer-tagline">Chaque fil, une histoire tissée pour vous.</div>
+            </div>
+            <div>
+                <h4 class="footer-title">Boutique</h4>
+                <ul class="footer-links">
+                    <li><a href="#" onclick="navigate('boutique', event); filterProducts('Fleurs');">Fleurs éternelles</a></li>
+                    <li><a href="#" onclick="navigate('boutique', event); filterProducts('Tenues');">Tenues</a></li>
+                    <li><a href="#" onclick="navigate('boutique', event); filterProducts('Bonnets');">Bonnets & Écharpes</a></li>
+                    <li><a href="#" onclick="navigate('boutique', event); filterProducts('Cadeaux');">Coffrets Cadeaux</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title">Services</h4>
+                <ul class="footer-links">
+                    <li><a href="#" onclick="navigate('services', event)">Saint-Valentin</a></li>
+                    <li><a href="#" onclick="navigate('services', event)">Anniversaires</a></li>
+                    <li><a href="#" onclick="navigate('services', event)">Décoration Hôtels</a></li>
+                    <li><a href="#" onclick="navigate('services', event)">Sur mesure</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title">Contact</h4>
+                <ul class="footer-links">
+                    <li>Cotonou, Bénin</li>
+                    <li><a href="https://wa.me/2290151875885">WhatsApp: +229 01 51 87 58 85</a></li>
+                    <li><a href="#">Instagram: @mias_crochet</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div>© 2026 mia's — All rights reserved.</div>
+            <div>Fait avec passion au Bénin</div>
+        </div>
+        <svg class="footer-bg-leaf" viewBox="0 0 24 24" fill="currentColor"><path d="M17 8C17 8 13 4 8 4C3 4 3 9 3 9C3 14 8 18 8 18C8 18 12 22 17 22C22 22 22 17 22 17C22 12 17 8 17 8Z"/></svg>
+    </footer>
+
+    <!-- PRODUCT MODAL -->
+    <div class="modal-overlay" onclick="closeModal()">
+        <div class="modal" id="product-modal" onclick="event.stopPropagation()">
+            <div class="modal-close" onclick="closeModal()">✕</div>
+            
+            <div class="modal-main">
+                <div class="modal-left">
+                    <div class="modal-img" id="modal-img"></div>
+                </div>
+                
+                <div class="modal-content">
+                    <div class="modal-cat" id="modal-cat">Catégorie</div>
+                    <h2 class="modal-title" id="modal-title">Nom Produit</h2>
+                    <div class="modal-price" id="modal-price">0 FCFA</div>
+                    <div class="modal-stock">Rupture de stock / Sur commande</div>
+
+                    <div class="modal-variants">
+                        <div class="variant-group">
+                            <label>COULEUR</label>
+                            <div class="variant-options">
+                                <div class="v-color active" style="background: #2e7a8f;" onclick="this.parentNode.querySelectorAll('.v-color').forEach(e=>e.classList.remove('active')); this.classList.add('active');"></div>
+                                <div class="v-color" style="background: #e8dcc4;" onclick="this.parentNode.querySelectorAll('.v-color').forEach(e=>e.classList.remove('active')); this.classList.add('active');"></div>
+                                <div class="v-color" style="background: #fff;" onclick="this.parentNode.querySelectorAll('.v-color').forEach(e=>e.classList.remove('active')); this.classList.add('active');"></div>
+                            </div>
+                        </div>
+                        <div class="variant-group">
+                            <label>TAILLE</label>
+                            <div class="variant-options">
+                                <div class="v-opt" onclick="this.parentNode.querySelectorAll('.v-opt').forEach(e=>e.classList.remove('active')); this.classList.add('active');">S</div>
+                                <div class="v-opt active" onclick="this.parentNode.querySelectorAll('.v-opt').forEach(e=>e.classList.remove('active')); this.classList.add('active');">M</div>
+                                <div class="v-opt" onclick="this.parentNode.querySelectorAll('.v-opt').forEach(e=>e.classList.remove('active')); this.classList.add('active');">L</div>
+                                <div class="v-opt" onclick="this.parentNode.querySelectorAll('.v-opt').forEach(e=>e.classList.remove('active')); this.classList.add('active');">XL</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <div class="qty-ctrl">
+                            <button class="qty-btn" onclick="modalQty(-1)">-</button>
+                            <div class="qty-val" id="modal-qty">1</div>
+                            <button class="qty-btn" onclick="modalQty(1)">+</button>
+                        </div>
+                        <button class="btn-add-large" onclick="addToCartFromModal()">
+                            Ajouter au panier
+                        </button>
+                    </div>
+
+                    <div class="product-meta">
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                            Livraison estimée : 3 à 5 jours
+                        </div>
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            Retours gratuits sous 14 jours
+                        </div>
+                    </div>
+
+                    <h3 class="modal-desc-title">Description</h3>
+                    <p class="modal-desc" id="modal-desc">Description longue du produit.</p>
+                </div>
+            </div>
+            
+            <div class="promo-banner-wide">
+                <div class="pb-left">
+                    <span class="pb-stars">✨</span>
+                    <div class="pb-text">
+                        Sur votre première commande<br>
+                        <span>LIVRAISON OFFERTE !</span>
+                    </div>
+                </div>
+                <div class="pb-right">
+                    <div class="badge-code">CODE FIRST50</div>
+                    <div class="badge-discount">50% DISCOUNT</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- WHATSAPP FLOAT BUTTON -->
+    <a href="https://wa.me/2290151875885" class="wa-float" target="_blank" title="Contactez-nous sur WhatsApp">
+        <svg viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/></svg>
+    </a>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // DATA
+        const products = [
+            { id: 1, name: "Bouquet Rose Éternel", category: "Fleurs", price: 8500, imageId: "images/anya-chernykh-jq0B9v_rYtg-unsplash.jpg", badge: "Best-seller", color: "#C97A72", desc: "Magnifique bouquet de roses crochetées à la main. Ne fane jamais, parfait pour déclarer votre amour éternel." },
+            { id: 2, name: "Bouquet Marguerites", category: "Fleurs", price: 7200, imageId: "images/bogdan-nesterenko-Lt8LMbCauBo-unsplash.jpg", badge: "", color: "#E8C14B", desc: "Un rayon de soleil dans votre intérieur. Bouquet de marguerites délicates au crochet." },
+            { id: 3, name: "Couronne Florale Murale", category: "Fleurs", price: 12000, imageId: "images/dario-gomes-lher3yguqVA-unsplash.jpg", badge: "Nouveau", color: "#6DB8CC", desc: "Décoration murale bohème chic avec cerceau en bois et compositions florales au crochet." },
+            { id: 4, name: "Top Crochet Été", category: "Tenues", price: 15000, imageId: "images/dwayne-joe-MBi1x-HBjKA-unsplash.jpg", badge: "Best-seller", color: "#4A9BAF", desc: "Top dos nu élégant et léger, idéal pour les journées ensoleillées ou la plage." },
+            { id: 5, name: "Robe Bohème Crochet", category: "Tenues", price: 22000, imageId: "images/dwayne-joe-MXhcH9EIEBw-unsplash.jpg", badge: "", color: "#E8E4DF", desc: "Robe longue ajourée, un travail minutieux pour une allure résolument bohème et sophistiquée." },
+            { id: 6, name: "Crop Top Dentelle", category: "Tenues", price: 13500, imageId: "images/dwayne-joe-f2WM_P7mQqM-unsplash.jpg", badge: "", color: "#C97A72", desc: "Crop top motif dentelle avec fines bretelles. Se marie parfaitement avec un jean taille haute." },
+            { id: 7, name: "Bonnet Doux Hiver", category: "Bonnets", price: 5500, imageId: "images/dwayne-joe-hF_Ygbj0HQo-unsplash.jpg", badge: "", color: "#2E7A8F", desc: "Bonnet chaud et doux, maille extensible pour s'adapter à toutes les têtes." },
+            { id: 8, name: "Écharpe Torsadée", category: "Bonnets", price: 6800, imageId: "images/jason-leung-_1UY85AM1j8-unsplash.jpg", badge: "", color: "#4A9BAF", desc: "Écharpe texturée avec de magnifiques motifs torsadés, très chaude et élégante." },
+            { id: 9, name: "Set Bonnet + Écharpe", category: "Bonnets", price: 11000, imageId: "images/lizzi-sassman-M7ZuRWaaevw-unsplash.jpg", badge: "Best-seller", color: "#6DB8CC", desc: "Le combo parfait pour affronter la fraîcheur avec style. Laine premium." },
+            { id: 10, name: "Box Cadeau Saint-Valentin", category: "Cadeaux", price: 18000, imageId: "images/maria-kovalets-RgEaD36YYGI-unsplash.jpg", badge: "Nouveau", color: "#C97A72", desc: "Coffret incluant un bouquet éternel, une bougie et une création surprise au crochet." },
+            { id: 11, name: "Box Surprise Anniversaire", category: "Cadeaux", price: 14500, imageId: "images/maria-kovalets-p1GfuxUWUOc-unsplash.jpg", badge: "", color: "#E8C14B", desc: "Le cadeau idéal et original prêt à offrir. Contenu personnalisable." },
+            { id: 12, name: "Kit Décoration Maison", category: "Cadeaux", price: 9500, imageId: "images/paul-hanaoka-4nabmlliGdU-unsplash.jpg", badge: "", color: "#4A9BAF", desc: "Ensemble de petits accessoires déco (sous-verres, mini-corbeilles) pour sublimer un intérieur." }
+        ];
+
+        const galerieItems = [
+            { category: "Fleurs", imageId: "images/anya-chernykh-jq0B9v_rYtg-unsplash.jpg", bg: "#E8C14B" },
+            { category: "Tenues", imageId: "images/bogdan-nesterenko-Lt8LMbCauBo-unsplash.jpg", bg: "#4A9BAF" },
+            { category: "Événements", imageId: "images/dario-gomes-lher3yguqVA-unsplash.jpg", bg: "#C97A72" },
+            { category: "Fleurs", imageId: "images/dwayne-joe-MBi1x-HBjKA-unsplash.jpg", bg: "#E8C14B" },
+            { category: "Tenues", imageId: "images/dwayne-joe-MXhcH9EIEBw-unsplash.jpg", bg: "#6DB8CC" },
+            { category: "Événements", imageId: "images/dwayne-joe-f2WM_P7mQqM-unsplash.jpg", bg: "#4A9BAF" },
+            { category: "Fleurs", imageId: "images/dwayne-joe-hF_Ygbj0HQo-unsplash.jpg", bg: "#C97A72" },
+            { category: "Tenues", imageId: "images/jason-leung-_1UY85AM1j8-unsplash.jpg", bg: "#E8E4DF" },
+            { category: "Événements", imageId: "images/lizzi-sassman-M7ZuRWaaevw-unsplash.jpg", bg: "#2E7A8F" },
+            { category: "Fleurs", imageId: "images/maria-kovalets-RgEaD36YYGI-unsplash.jpg", bg: "#4A9BAF" },
+            { category: "Tenues", imageId: "images/maria-kovalets-p1GfuxUWUOc-unsplash.jpg", bg: "#C97A72" },
+            { category: "Événements", imageId: "images/paul-hanaoka-4nabmlliGdU-unsplash.jpg", bg: "#E8C14B" },
+            { category: "Fleurs", imageId: "images/shelter-dg0uHhW0Fd4-unsplash.jpg", bg: "#E8C14B" },
+            { category: "Tenues", imageId: "images/srozan-nadzmi-e_hb1Zd3nkA-unsplash.jpg", bg: "#4A9BAF" },
+            { category: "Événements", imageId: "images/tom-caillarec-UOYn8p-b0v8-unsplash.jpg", bg: "#C97A72" },
+            { category: "Fleurs", imageId: "images/yuliia-pakhomova-g3AwbdZut70-unsplash.jpg", bg: "#E8C14B" }
+        ];
+
+        // STATE
+        const state = {
+            currentPage: 'home',
+            cart: [],
+            cartOpen: false,
+            activeFilter: 'all',
+            galerieFilter: 'all',
+            modalProduct: null,
+            currentModalQty: 1
+        };
+
+        // DOM ELEMENTS
+        const pages = document.querySelectorAll('.page');
+        const navLinks = document.querySelectorAll('.nav-links a');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav a');
+        const mobileNav = document.getElementById('mobile-nav');
+        const navbar = document.getElementById('navbar');
+        const homeFeaturedGrid = document.getElementById('home-featured-products');
+        const fullProductGrid = document.getElementById('full-product-grid');
+        const galerieGrid = document.getElementById('galerie-grid');
+        const cartBadge = document.getElementById('cart-badge');
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartTotalPrice = document.getElementById('cart-total-price');
+
+        // ROUTING
+        function navigate(pageId, event) {
+            if (event) event.preventDefault();
+            
+            // Hide all pages
+            pages.forEach(p => p.classList.remove('active'));
+            // Show target page
+            document.getElementById(`page-${pageId}`).classList.add('active');
+            
+            // Update state
+            state.currentPage = pageId;
+            
+            // Update active nav links
+            [...navLinks, ...mobileNavLinks].forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('onclick').includes(`'${pageId}'`)) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Close mobile nav if open
+            mobileNav.classList.remove('open');
+            document.querySelector('.burger').classList.remove('active');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Trigger reveals
+            setTimeout(handleScroll, 100);
+        }
+
+        // SCROLL EFFECTS
+        function handleScroll() {
+            // Navbar styling
+            if (window.scrollY > 60 || state.currentPage !== 'home') {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+
+            // Reveal elements
+            const reveals = document.querySelectorAll('.reveal');
+            const windowHeight = window.innerHeight;
+            reveals.forEach(reveal => {
+                const revealTop = reveal.getBoundingClientRect().top;
+                if (revealTop < windowHeight - 100) {
+                    reveal.classList.add('active');
+                }
+            });
+        }
+        window.addEventListener('scroll', handleScroll);
+
+        // CART LOGIC
+        function toggleCart() {
+            document.body.classList.toggle('cart-open');
+        }
+
+        function addToCart(productId, qty = 1, event) {
+            if (event) event.stopPropagation();
+            
+            const product = products.find(p => p.id === productId);
+            const existingItem = state.cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.qty += qty;
+            } else {
+                state.cart.push({ ...product, qty });
+            }
+            
+            updateCartUI();
+            showToast();
+            if (document.body.classList.contains('modal-open')) {
+                closeModal();
+            }
+        }
+
+        function removeFromCart(productId) {
+            state.cart = state.cart.filter(item => item.id !== productId);
+            updateCartUI();
+        }
+
+        function updateQty(productId, delta) {
+            const item = state.cart.find(item => item.id === productId);
+            if (item) {
+                item.qty += delta;
+                if (item.qty <= 0) removeFromCart(productId);
+                else updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            // Badge
+            const totalItems = state.cart.reduce((sum, item) => sum + item.qty, 0);
+            cartBadge.textContent = totalItems;
+            
+            // Items
+            if (state.cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="cart-empty">
+                        <div class="cart-empty-icon">🛍️</div>
+                        <p>Votre panier est vide</p>
+                    </div>
+                `;
+                cartTotalPrice.textContent = "0 FCFA";
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+            
+            state.cart.forEach(item => {
+                total += item.price * item.qty;
+                html += `
+                    <div class="cart-item">
+                        <div class="ci-img" style="background-color: ${item.color}20; overflow:hidden;"><img src="${item.imageId}" style="width:100%; height:100%; object-fit:cover;" loading="lazy"></div>
+                        <div class="ci-details">
+                            <div class="ci-name">${item.name}</div>
+                            <div class="ci-price">${item.price.toLocaleString()} FCFA</div>
+                            <div class="ci-controls">
+                                <div class="qty-ctrl">
+                                    <button class="qty-btn" onclick="updateQty(${item.id}, -1)">-</button>
+                                    <div class="qty-val">${item.qty}</div>
+                                    <button class="qty-btn" onclick="updateQty(${item.id}, 1)">+</button>
+                                </div>
+                                <button class="ci-remove" onclick="removeFromCart(${item.id})">Supprimer</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            cartItemsContainer.innerHTML = html;
+            cartTotalPrice.textContent = `${total.toLocaleString()} FCFA`;
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function checkout() {
+            if (state.cart.length === 0) return;
+            
+            let message = "Bonjour Mia's ! Je souhaite commander :\n\n";
+            let total = 0;
+            state.cart.forEach(item => {
+                message += `- ${item.qty}x ${item.name} (${item.price * item.qty} FCFA)\n`;
+                total += item.price * item.qty;
+            });
+            message += `\nSous-total : ${total} FCFA\n\nMerci !`;
+            
+            toggleCart();
+            navigate('contact');
+            document.getElementById('contact-subject').value = 'Commande produit';
+            document.querySelector('textarea.form-control').value = message;
+        }
+
+        // RENDER PRODUCTS
+        function renderProductCard(product) {
+            const badgeHtml = product.badge ? `<div class="product-badge">${product.badge}</div>` : '';
+            return `
+                <div class="product-card" onclick="openModal(${product.id})">
+                    <div class="product-img" style="background: linear-gradient(135deg, ${product.color}20, ${product.color}60);">
+                        <img src="${product.imageId}" alt="${product.name}" style="width:100%; height:260px; object-fit:cover; border-radius: inherit;" loading="lazy" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #4A9BAF, #2E7A8F)'">
+                        ${badgeHtml}
+                        <button class="product-wish" onclick="event.stopPropagation()">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-cat">${product.category}</div>
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-desc">${product.desc}</p>
+                        <div class="product-bottom">
+                            <div class="product-price">${product.price.toLocaleString()} FCFA</div>
+                            <button class="btn-add" onclick="addToCart(${product.id}, 1, event)">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                <span>Ajouter</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderProducts() {
+            // Home 3 featured
+            const featured = products.filter(p => p.badge === 'Best-seller').slice(0, 3);
+            homeFeaturedGrid.innerHTML = featured.map(renderProductCard).join('');
+            
+            // Shop full grid
+            document.getElementById('product-count').textContent = products.length;
+            filterProducts('all', false); // Initial render
+        }
+
+        // SHOP FILTERS & SORT
+        function filterProducts(category, updateActive = true) {
+            state.activeFilter = category;
+            
+            if (updateActive) {
+                document.querySelectorAll('#shop-filters .filter-pill').forEach(pill => {
+                    pill.classList.remove('active');
+                    if (pill.textContent.includes(category) || (category === 'all' && pill.textContent === 'Tout')) {
+                        pill.classList.add('active');
+                    }
+                });
+            }
+
+            let filtered = category === 'all' ? [...products] : products.filter(p => p.category === category);
+            
+            // Re-apply sort
+            const sortVal = document.querySelector('.sort-select').value;
+            sortProductsList(filtered, sortVal);
+        }
+
+        function sortProducts(val) {
+            let filtered = state.activeFilter === 'all' ? [...products] : products.filter(p => p.category === state.activeFilter);
+            sortProductsList(filtered, val);
+        }
+
+        function sortProductsList(list, val) {
+            if (val === 'asc') list.sort((a, b) => a.price - b.price);
+            if (val === 'desc') list.sort((a, b) => b.price - a.price);
+            if (val === 'new') list.sort((a, b) => a.badge === 'Nouveau' ? -1 : 1);
+            
+            fullProductGrid.innerHTML = list.map(renderProductCard).join('');
+        }
+
+        // GALERIE
+        function renderGalerie() {
+            filterGalerie('all', false);
+        }
+
+        function filterGalerie(category, updateActive = true) {
+            state.galerieFilter = category;
+            
+            if (updateActive) {
+                document.querySelectorAll('#galerie-filters .filter-pill').forEach(pill => {
+                    pill.classList.remove('active');
+                    if (pill.textContent === category || (category === 'all' && pill.textContent === 'Tout')) {
+                        pill.classList.add('active');
+                    }
+                });
+            }
+
+            let filtered = category === 'all' ? galerieItems : galerieItems.filter(p => p.category === category);
+            
+            galerieGrid.innerHTML = filtered.map(item => `
+                <div class="masonry-item">
+                    <div class="masonry-img" style="background: ${item.bg}30; height: ${200 + (Math.random() > 0.5 ? 40 : 80)}px; padding: 0;">
+                        <img src="${item.imageId}" style="width:100%; height:100%; object-fit:cover; border-radius:inherit;" loading="lazy" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #4A9BAF, #2E7A8F)'">
+                    </div>
+                    <div class="masonry-overlay">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                        <div class="masonry-cat">${item.category}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // MODAL
+        function openModal(productId) {
+            const product = products.find(p => p.id === productId);
+            state.modalProduct = product;
+            state.currentModalQty = 1;
+            
+            document.getElementById('modal-img').innerHTML = `<img src="${product.imageId}" style="width:100%; height:100%; object-fit:cover;" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #4A9BAF, #2E7A8F)'">`;
+            document.getElementById('modal-img').style.padding = '0';
+            document.getElementById('modal-img').style.background = `linear-gradient(135deg, ${product.color}20, ${product.color}60)`;
+            document.getElementById('modal-cat').textContent = product.category;
+            document.getElementById('modal-title').textContent = product.name;
+            document.getElementById('modal-price').textContent = `${product.price.toLocaleString()} FCFA`;
+            document.getElementById('modal-desc').textContent = product.desc;
+            document.getElementById('modal-qty').textContent = state.currentModalQty;
+            
+            document.body.classList.add('modal-open');
+        }
+
+        function closeModal() {
+            document.body.classList.remove('modal-open');
+            state.modalProduct = null;
+        }
+
+        function modalQty(delta) {
+            state.currentModalQty += delta;
+            if (state.currentModalQty < 1) state.currentModalQty = 1;
+            document.getElementById('modal-qty').textContent = state.currentModalQty;
+        }
+
+        function addToCartFromModal() {
+            if (state.modalProduct) {
+                addToCart(state.modalProduct.id, state.currentModalQty);
+            }
+        }
+
+        // UTILS
+        function toggleMobileNav() {
+            mobileNav.classList.toggle('open');
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+            document.getElementById('form-success').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('form-success').style.display = 'none';
+                event.target.reset();
+            }, 5000);
+        }
+
+        // INIT
+        window.onload = () => {
+            renderProducts();
+            renderGalerie();
+            updateCartUI();
+            handleScroll();
+            // Initial reveal check
+            setTimeout(() => document.querySelector('.hero-left').classList.add('active'), 100);
+        };
+    </script>
+</body>
+</html>
