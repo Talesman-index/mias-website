@@ -509,7 +509,13 @@
         .progress-seg { height: 3px; flex: 1; background: rgba(255, 255, 255, 0.25); border-radius: 10px; overflow: hidden; }
         .progress-bar { width: 0; height: 100%; background: var(--white); transition: none; }
         .progress-seg.viewed .progress-bar { width: 100%; }
+        .nav-zone {
+            position: absolute; top: 0; bottom: 0; width: 40%; z-index: 25;
+            cursor: pointer; background: rgba(0,0,0,0); user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
         .nav-zone-left { left: 0; }
+        .nav-zone-right { right: 0; }
 
         /* THUMBNAILS STRIP */
         .story-thumbs-wrap {
@@ -839,8 +845,8 @@
 
                     <div class="story-viewport" id="crochet-story">
                         <div class="story-progress" id="story-progress"></div>
-                        <div class="nav-zone nav-zone-left" onclick="moveStory(-1)"></div>
-                        <div class="nav-zone nav-zone-right" onclick="moveStory(1)"></div>
+                        <div class="nav-zone nav-zone-left" id="story-prev"></div>
+                        <div class="nav-zone nav-zone-right" id="story-next"></div>
                         <div class="story-track" id="story-track">
                             <!-- Injected by JS -->
                         </div>
@@ -1008,7 +1014,7 @@
                             <h2 style="font-size:clamp(40px, 6vw, 72px); margin-bottom:40px; line-height:1.1;">Dites-nous <span class="underline">tout</span>.</h2>
                             <p style="font-size:20px; opacity:0.7; margin-bottom:60px; max-width:600px;">Que ce soit pour une commande personnalisée, une question sur nos ateliers ou juste un mot doux, nous vous répondrons avec plaisir.</p>
                             
-                            <form id="contact-form" class="premium-form contact-form-resp" onsubmit="alert('Votre message a été envoyé ! Nous vous contacterons très vite.'); return false;">
+                            <form id="contact-form" class="premium-form contact-form-resp" onsubmit="sendWhatsAppMessage(event)">
                                 <div class="contact-inputs-grid" style="display:grid; grid-template-columns: 1fr 1fr; gap:30px; margin-bottom:30px;">
                                     <div class="input-group">
                                         <label>Votre Nom</label>
@@ -1433,33 +1439,54 @@ Voici quelques détails supplémentaires : `;
             }
 
             window.moveStory = function(dir) {
-                const slides = document.querySelectorAll('.story-slide');
                 const newIndex = storyIndex + dir;
-                
                 if (newIndex < 0 || newIndex >= storyData.length) {
-                    if (dir > 0) goToStory(0); // Loop back
+                    if (dir > 0) goToStory(0);
                     else return;
                 } else {
                     goToStory(newIndex, dir);
                 }
             };
 
-            window.goToStory = function(index, dir = 1) {
+            window.goToStory = function(index) {
                 const slides = document.querySelectorAll('.story-slide');
                 const thumbs = document.querySelectorAll('.thumb-item');
+                if (!slides.length) return;
                 
+                // Set transition direction
                 slides[storyIndex].className = index > storyIndex ? 'story-slide prev' : 'story-slide';
                 storyIndex = index;
                 slides[storyIndex].className = 'story-slide active';
                 
                 thumbs.forEach((t, i) => t.classList.toggle('active', i === storyIndex));
-                
-                // Auto-scroll thumbnails
                 const activeThumb = thumbs[storyIndex];
                 if (activeThumb) activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
 
                 resetStoryTimers();
             };
+
+            // Event listeners for robust navigation
+            function setupStoryNav() {
+                const btnPrev = document.getElementById('story-prev');
+                const btnNext = document.getElementById('story-next');
+                if (btnPrev && btnNext) {
+                    const handlePrev = (e) => { 
+                        e.stopPropagation();
+                        e.preventDefault(); 
+                        moveStory(-1); 
+                    };
+                    const handleNext = (e) => { 
+                        e.stopPropagation();
+                        e.preventDefault(); 
+                        moveStory(1); 
+                    };
+                    btnPrev.onclick = handlePrev;
+                    btnNext.onclick = handleNext;
+                    btnPrev.ontouchstart = handlePrev;
+                    btnNext.ontouchstart = handleNext;
+                }
+            }
+            setupStoryNav();
 
             function resetStoryTimers() {
                 clearTimeout(storyAutoTimer);
@@ -1492,6 +1519,19 @@ Voici quelques détails supplémentaires : `;
             }
 
             initStory();
+
+            window.sendWhatsAppMessage = function(e) {
+                e.preventDefault();
+                const name = document.getElementById('contact-name').value;
+                const email = document.getElementById('contact-email').value;
+                const message = document.getElementById('contact-message').value;
+                
+                const fullMessage = `Bonjour Mia's !\n\nNom: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
+                const encodedMessage = encodeURIComponent(fullMessage);
+                const whatsappUrl = `https://wa.me/2290151875885?text=${encodedMessage}`;
+                
+                window.open(whatsappUrl, '_blank');
+            };
 
             window.toggleMobileNav = function(show) {
                 const nav = document.getElementById('mobile-nav');
