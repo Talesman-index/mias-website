@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boriyo — Galerie Story-Style</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="galerie.css">
+</head>
+<body>
+    <div class="page-glow"></div>
+
+    <!-- CATEGORY FILTERS (Desktop Only) -->
+    <div class="filters-container">
+        <button class="filter-btn active">TOUT</button>
+        <button class="filter-btn">NAIL ART</button>
+        <button class="filter-btn">SOIN VISAGE</button>
+        <button class="filter-btn">AVANT · APRÈS</button>
+    </div>
+
+    <!-- MAIN GALLERY COMPONENT -->
+    <main class="story-wrapper">
+        <div class="story-container">
+            <!-- PROGRESS BAR -->
+            <div class="progress-container" id="progress-container"></div>
+
+            <!-- NAVIGATION AREAS -->
+            <div class="nav-area nav-area-left" aria-label="Slide précédent"></div>
+            <div class="nav-area nav-area-right" aria-label="Slide suivant"></div>
+
+            <!-- SLIDES TRACK -->
+            <div class="slides-track" id="slides-track">
+                <!-- Slides will be injected via JS -->
+            </div>
+
+            <!-- DESKTOP HINT -->
+            <div class="desktop-hint">← · →</div>
+        </div>
+    </main>
+
+    <script src="galerie.js"></script>
+</body>
+</html>

@@ -1,0 +1,320 @@
+:root {
+    --bg:           #110A03;
+    --bg-card:      #1C1208;
+    --gold:         #C9A96E;
+    --gold-light:   #E8D5B0;
+    --cream:        #F5ECD8;
+    --muted:        rgba(201, 169, 110, 0.45);
+    --white:        #FFFFFF;
+    --font-serif:   'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+    --font-sans:    'Inter', 'DM Sans', sans-serif;
+    --radius-card:  16px;
+    --glow:         radial-gradient(ellipse at 50% 40%, rgba(201,169,110,0.12) 0%, transparent 65%);
+    --transition:   0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+    background-color: var(--bg);
+    color: var(--cream);
+    font-family: var(--font-sans);
+    overflow: hidden;
+    height: 100dvh;
+}
+
+/* BACKGROUND GLOW */
+.page-glow {
+    position: fixed;
+    inset: 0;
+    background: var(--glow);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* FILTERS (DESKTOP) */
+.filters-container {
+    position: fixed;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+}
+
+@media (max-width: 767px) {
+    .filters-container { display: none; }
+}
+
+.filter-btn {
+    padding: 8px 20px;
+    border-radius: 100px;
+    border: 1px solid var(--muted);
+    background: transparent;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.filter-btn.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--bg);
+}
+
+/* STORY COMPONENT */
+.story-wrapper {
+    position: relative;
+    width: 100vw;
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.story-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-card);
+    overflow: hidden;
+    box-shadow: 0 32px 64px rgba(0,0,0,0.5);
+    transition: var(--transition);
+}
+
+@media (min-width: 768px) {
+    .story-container {
+        width: 420px;
+        height: 746px; /* 9:16 ratio approximately */
+        border-radius: 24px;
+        margin-top: 40px;
+    }
+}
+
+/* SLIDES */
+.slides-track {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(20px);
+    transition: opacity 0.4s ease-out, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+    z-index: 2;
+}
+
+.slide.prev {
+    transform: translateX(-20px);
+}
+
+.slide-media {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* OVERLAYS */
+.slide-overlay-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: linear-gradient(to top, rgba(17,10,3,0.9) 0%, transparent 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.slide-overlay-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 30%;
+    background: linear-gradient(to bottom, rgba(17,10,3,0.6) 0%, transparent 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* CONTENT */
+.slide-content {
+    position: absolute;
+    bottom: 60px;
+    left: 40px;
+    right: 40px;
+    z-index: 3;
+}
+
+.slide-category {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 12px;
+}
+
+.slide-title {
+    font-family: var(--font-serif);
+    font-size: clamp(24px, 6vw, 36px);
+    color: var(--gold-light);
+    margin-bottom: 12px;
+    line-height: 1.2;
+}
+
+.slide-desc {
+    font-size: 14px;
+    color: var(--cream);
+    line-height: 1.5;
+    max-width: 90%;
+}
+
+.slide-counter {
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    z-index: 3;
+}
+
+/* PROGRESS BAR */
+.progress-container {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    right: 10px;
+    display: flex;
+    gap: 4px;
+    z-index: 10;
+}
+
+.progress-segment {
+    height: 2px;
+    flex: 1;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    width: 0;
+    height: 100%;
+    background: var(--white);
+}
+
+.progress-segment.viewed .progress-fill {
+    width: 100%;
+}
+
+/* NAVIGATION AREAS */
+.nav-area {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    z-index: 20;
+    cursor: pointer;
+}
+
+.nav-area-left {
+    left: 0;
+}
+
+.nav-area-right {
+    right: 0;
+}
+
+/* SPECIAL SLIDES (INTRO & END) */
+.slide-special {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: var(--bg);
+}
+
+.slide-special .glow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--glow);
+    z-index: -1;
+}
+
+.btn-cta {
+    display: inline-block;
+    margin-top: 32px;
+    padding: 14px 28px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.btn-cta:hover {
+    background: var(--gold);
+    color: var(--bg);
+}
+
+.btn-back {
+    margin-top: 20px;
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: var(--transition);
+}
+
+.btn-back:hover {
+    border-bottom-color: var(--muted);
+}
+
+/* HINT FOR DESKTOP */
+.desktop-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: var(--muted);
+    letter-spacing: 0.5em;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.desktop-hint.visible {
+    opacity: 1;
+}
+
+/* REDUCED MOTION */
+@media (prefers-reduced-motion: reduce) {
+    .slide {
+        transform: none !important;
+    }
+}
