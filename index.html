@@ -1521,16 +1521,27 @@ Voici quelques détails supplémentaires : `;
             initStory();
 
             window.sendWhatsAppMessage = function(e) {
-                e.preventDefault();
+                if (e) e.preventDefault();
+                
                 const name = document.getElementById('contact-name').value;
                 const email = document.getElementById('contact-email').value;
                 const message = document.getElementById('contact-message').value;
                 
-                const fullMessage = `Bonjour Mia's !\n\nNom: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
-                const encodedMessage = encodeURIComponent(fullMessage);
-                const whatsappUrl = `https://wa.me/2290151875885?text=${encodedMessage}`;
+                if (!name || !email || !message) {
+                    alert("Merci de remplir tous les champs du formulaire.");
+                    return;
+                }
                 
-                window.open(whatsappUrl, '_blank');
+                // Construct the final message
+                let finalMsg = `*Nouvelle demande Mia's Boutique*\n\n`;
+                finalMsg += `*Nom:* ${name}\n`;
+                finalMsg += `*Email:* ${email}\n\n`;
+                finalMsg += `*Message:*\n${message}`;
+                
+                const whatsappUrl = `https://wa.me/2290151875885?text=${encodeURIComponent(finalMsg)}`;
+                
+                // Using location.href is often more reliable on mobile to trigger the app directly
+                window.location.href = whatsappUrl;
             };
 
             window.toggleMobileNav = function(show) {
