@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="favicon_mias.png">
+    <title>Administration — Mia's Crochet</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --linen:      #f5f9fa;
+            --parchment:  #e8f1f2;
+            --blush:      #a5d1d9;
+            --rose-dust:  #76949f;
+            --terracotta: #3d8299;
+            --moss:       #4f7c82;
+            --sage:       #a8c0c4;
+            --bark:       #1a2b33;
+            --white:      #FFFFFF;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --shadow-soft: 0 10px 30px rgba(26, 43, 51, 0.05);
+            --shadow-premium: 0 20px 60px rgba(26, 43, 51, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--linen);
+            color: var(--bark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: ""; position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.05; pointer-events: none; z-index: 9999;
+        }
+
+        h1, h2, h3 { font-family: 'Lora', serif; font-weight: 600; }
+
+        .btn-atypique {
+            position: relative; padding: 14px 32px; background: var(--bark); color: var(--linen);
+            border: none; border-radius: 100px; font-weight: 700; text-transform: uppercase; font-size: 12px;
+            display: inline-flex; align-items: center; gap: 10px; cursor: pointer; transition: var(--transition);
+            box-shadow: 0 10px 20px rgba(26, 43, 51, 0.15);
+        }
+        .btn-atypique:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(26, 43, 51, 0.2); background: var(--terracotta); }
+        .btn-atypique:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .btn-ghost {
+            background: transparent; border: 1px solid var(--bark); color: var(--bark);
+            padding: 12px 28px; border-radius: 100px; font-weight: 600; font-size: 13px;
+            cursor: pointer; transition: var(--transition);
+        }
+        .btn-ghost:hover { background: var(--parchment); }
+
+        /* LOGIN PAGE */
+        #login-page {
+            display: none; height: 100vh; align-items: center; justify-content: center; padding: 20px;
+        }
+        .login-card {
+            background: var(--white); width: 100%; max-width: 480px; padding: 60px 48px;
+            border-radius: 24px; box-shadow: var(--shadow-premium); text-align: center;
+        }
+        .login-logo { height: 120px; margin-bottom: 32px; }
+        .login-card h2 { margin-bottom: 40px; font-size: 32px; }
+        .form-group { text-align: left; margin-bottom: 24px; }
+        .form-group label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 8px; opacity: 0.8; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 16px; border-radius: 12px; border: 1px solid rgba(26, 43, 51, 0.1);
+            background: var(--parchment); font-family: inherit; font-size: 15px; transition: 0.3s;
+        }
+        .form-group input:focus { outline: none; border-color: var(--terracotta); background: var(--white); }
+        .password-wrapper { position: relative; }
+        .toggle-password {
+            position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+            cursor: pointer; opacity: 0.5; transition: 0.3s; padding: 5px;
+        }
+        .toggle-password:hover { opacity: 1; color: var(--terracotta); }
+        .error-msg { color: #d63031; font-size: 14px; margin-top: 16px; min-height: 20px; font-weight: 500; }
+
+        /* DASHBOARD LAYOUT */
+        #admin-dash { display: none; }
+        .admin-nav {
+            position: fixed; top: 0; left: 0; right: 0; height: 80px; background: var(--white);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 40px;
+            border-bottom: 1px solid rgba(26, 43, 51, 0.05); z-index: 100;
+        }
+        .nav-logo { height: 64px; }
+        .nav-title { font-family: 'Lora', serif; font-size: 20px; color: var(--terracotta); }
+
+        .admin-sidebar {
+            position: fixed; top: 80px; left: 0; bottom: 0; width: 260px;
+            background: var(--white); padding: 40px 20px; border-right: 1px solid rgba(26, 43, 51, 0.05);
+        }
+        .sidebar-link {
+            display: flex; align-items: center; gap: 12px; padding: 16px 24px;
+            border-radius: 12px; color: var(--bark); font-weight: 600; margin-bottom: 8px;
+            cursor: pointer; transition: 0.3s;
+        }
+        .sidebar-link:hover { background: var(--linen); }
+        .sidebar-link.active { background: var(--terracotta); color: var(--white); }
+
+        .admin-content { margin-left: 260px; padding: 120px 60px 60px; min-height: 100vh; }
+        .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 60px; }
+        .page-header h2 { font-size: 48px; }
+
+        /* PRODUCT LIST */
+        .products-grid { display: grid; gap: 24px; }
+        .product-item {
+            background: var(--white); border-radius: 20px; padding: 20px;
+            display: flex; align-items: center; gap: 24px; box-shadow: var(--shadow-soft);
+            transition: var(--transition);
+        }
+        .product-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-premium); }
+        .item-img { width: 80px; height: 80px; border-radius: 12px; object-fit: cover; background: var(--parchment); }
+        .item-info { flex: 1; }
+        .item-info h4 { font-size: 18px; margin-bottom: 4px; }
+        .item-meta { display: flex; gap: 12px; font-size: 13px; opacity: 0.6; }
+        .item-price { font-weight: 700; color: var(--terracotta); font-size: 16px; margin-top: 4px; }
+        
+        .badge { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .badge-new { background: #e1f5fe; color: #0288d1; }
+        .badge-bestseller { background: #fff3e0; color: #ef6c00; }
+
+        .actions { display: flex; gap: 12px; align-items: center; }
+        .btn-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: var(--parchment); cursor: pointer; transition: 0.3s; }
+        .btn-icon:hover { background: var(--blush); color: var(--white); }
+        .btn-icon.delete:hover { background: #fee; color: #d63031; }
+
+        /* TOGGLE SWITCH */
+        .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; inset: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--terracotta); }
+        input:checked + .slider:before { transform: translateX(24px); }
+
+        /* MODAL & FORMS */
+        .modal {
+            position: fixed; inset: 0; background: rgba(26, 43, 51, 0.4); backdrop-filter: blur(8px);
+            display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: var(--white); width: 100%; max-width: 800px; max-height: 90vh;
+            border-radius: 32px; padding: 48px; overflow-y: auto; position: relative;
+            box-shadow: var(--shadow-premium);
+        }
+        .modal-header { margin-bottom: 32px; display: flex; justify-content: space-between; align-items: flex-start; }
+        .close-modal { font-size: 32px; cursor: pointer; opacity: 0.3; transition: 0.3s; }
+        .close-modal:hover { opacity: 1; color: var(--terracotta); }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .full-width { grid-column: 1 / -1; }
+
+        /* DRAG & DROP */
+        .upload-zone {
+            border: 2px dashed var(--blush); border-radius: 20px; padding: 40px;
+            background: var(--parchment); text-align: center; cursor: pointer;
+            transition: 0.3s; position: relative;
+        }
+        .upload-zone:hover, .upload-zone.dragover { border-color: var(--terracotta); background: var(--white); }
+        .upload-zone p { font-size: 14px; font-weight: 500; opacity: 0.7; margin-top: 12px; }
+        .upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+        .upload-preview { width: 100%; max-width: 240px; height: 240px; object-fit: cover; border-radius: 16px; margin: 20px auto 0; display: none; border: 1px solid var(--parchment); }
+
+        /* TOAST */
+        #toast {
+            position: fixed; bottom: 40px; right: 40px; padding: 16px 32px;
+            background: var(--bark); color: var(--white); border-radius: 12px;
+            font-weight: 600; font-size: 14px; box-shadow: var(--shadow-premium);
+            transform: translateY(100px); opacity: 0; transition: 0.5s; z-index: 2000;
+        }
+        #toast.active { transform: translateY(0); opacity: 1; }
+
+        /* CONFIRM MODAL */
+        .confirm-card { max-width: 400px; text-align: center; padding: 40px; }
+        .confirm-card h3 { margin-bottom: 16px; }
+        .confirm-card p { margin-bottom: 32px; opacity: 0.7; }
+        .confirm-actions { display: flex; gap: 12px; justify-content: center; }
+
+        /* RESPONSIVE BASE */
+        @media (max-width: 1024px) {
+            .admin-sidebar { width: 80px; padding: 40px 10px; }
+            .sidebar-link span { display: none; }
+            .admin-content { margin-left: 80px; padding: 100px 30px; }
+        }
+
+        @media (max-width: 768px) {
+            /* Navbar Mobile */
+            .admin-nav { padding: 0 20px; }
+            .nav-title { font-size: 16px; }
+
+            /* Sidebar to Mobile Nav */
+            .admin-sidebar {
+                position: fixed; top: 0; left: -100%; width: 280px; height: 100vh;
+                z-index: 2000; transition: 0.5s; box-shadow: 20px 0 60px rgba(0,0,0,0.1);
+                padding-top: 100px;
+            }
+            .admin-sidebar.active { left: 0; }
+            .sidebar-overlay { 
+                display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); 
+                backdrop-filter: blur(4px); z-index: 1999;
+            }
+            .sidebar-overlay.active { display: block; }
+            
+            .burger-admin { 
+                display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 10px;
+                background: var(--parchment); border-radius: 10px;
+            }
+            .burger-admin span { width: 20px; height: 2px; background: var(--bark); border-radius: 2px; }
+
+            .admin-content { margin-left: 0; padding: 120px 20px 40px; }
+            .page-header { flex-direction: column; align-items: flex-start; gap: 20px; margin-bottom: 40px; }
+            .page-header h2 { font-size: 36px; }
+
+            /* Product Items Mobile */
+            .product-item { flex-direction: column; align-items: flex-start; padding: 24px; gap: 16px; }
+            .item-img { width: 100%; height: 200px; }
+            .actions { width: 100%; justify-content: space-between; border-top: 1px solid var(--parchment); pt: 16px; margin-top: 10px; padding-top: 16px; }
+
+            /* Modal Mobile */
+            .modal-content { padding: 30px 20px; border-radius: 0; min-height: 100vh; max-height: 100vh; }
+            .form-grid { grid-template-columns: 1fr; gap: 16px; }
+            .modal-header h3 { font-size: 24px; }
+        }
+
+        .burger-admin { display: none; }
+        @media (max-width: 768px) { .burger-admin { display: flex; } }
+    </style>
+</head>
+<body>
+
+    <!-- TOAST -->
+    <div id="toast">Opération réussie !</div>
+
+    <!-- LOGIN PAGE -->
+    <section id="login-page">
+        <div class="login-card">
+            <img src="logo_mia's.png" alt="Logo" class="login-logo">
+            <h2>Espace Admin</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label>Nom d'utilisateur</label>
+                    <input type="text" id="username" required placeholder="dafiashalom@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label>Mot de passe</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" required placeholder="••••••••">
+                        <div class="toggle-password" onclick="togglePasswordVisibility()">
+                            <svg id="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn-atypique" style="width: 100%; justify-content: center;">Se connecter</button>
+                <p class="error-msg" id="login-error"></p>
+            </form>
+        </div>
+    </section>
+
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <!-- ADMIN DASHBOARD -->
+    <section id="admin-dash">
+        <nav class="admin-nav">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="burger-admin" onclick="toggleSidebar()">
+                    <span></span><span></span><span></span>
+                </div>
+                <img src="logo_mia's.png" alt="Logo" class="nav-logo">
+            </div>
+            <span class="nav-title">Espace Admin</span>
+            <button class="btn-ghost" onclick="logout()">Déconnexion</button>
+        </nav>
+
+        <aside class="admin-sidebar" id="admin-sidebar">
+            <div class="sidebar-link active" id="tab-products" onclick="switchTab('products')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                <span>Produits</span>
+            </div>
+            <div class="sidebar-link" id="tab-categories" onclick="switchTab('categories')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                <span>Catégories</span>
+            </div>
+            <div class="sidebar-link" onclick="openProductModal()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                <span>Ajouter un produit</span>
+            </div>
+        </aside>
+
+        <main class="admin-content">
+            <!-- PRODUCTS VIEW -->
+            <div id="view-products" class="admin-view">
+                <div class="page-header">
+                    <h2>Mes Produits</h2>
+                    <button class="btn-atypique" onclick="openProductModal()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v14M5 12h14"/></svg>
+                        Nouveau produit
+                    </button>
+                </div>
+                <div class="products-grid" id="products-list"></div>
+            </div>
+
+            <!-- CATEGORIES VIEW -->
+            <div id="view-categories" class="admin-view" style="display: none;">
+                <div class="page-header">
+                    <h2>Mes Catégories</h2>
+                    <div style="display: flex; gap: 12px;">
+                        <input type="text" id="new-cat-name" placeholder="Nom de la catégorie" style="padding: 12px 20px; border-radius: 100px; border: 1px solid var(--blush); background: var(--white); width: 240px;">
+                        <button class="btn-atypique" onclick="addCategory()">Ajouter</button>
+                    </div>
+                </div>
+                <div class="products-grid" id="categories-list">
+                    <!-- Categories injected here -->
+                </div>
+            </div>
+        </main>
+    </section>
+
+    <!-- PRODUCT MODAL -->
+    <div class="modal" id="product-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Nouveau Produit</h3>
+                <span class="close-modal" onclick="closeModal()">&times;</span>
+            </div>
+            <form id="product-form">
+                <input type="hidden" id="product-id">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Nom du produit</label>
+                        <input type="text" id="p-name" required placeholder="ex: Bouquet Rose">
+                    </div>
+                    <div class="form-group">
+                        <label>Prix (FCFA)</label>
+                        <input type="number" id="p-price" required placeholder="8500">
+                    </div>
+                    <div class="form-group">
+                        <label>Catégorie</label>
+                        <select id="p-cat" required>
+                            <!-- Options loaded dynamically -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Badge</label>
+                        <select id="p-badge">
+                            <option value="">Aucun</option>
+                            <option value="Nouveau">Nouveau</option>
+                            <option value="Best-seller">Best-seller</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Description</label>
+                        <textarea id="p-desc" rows="3" required placeholder="Décrivez votre création..."></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Image du produit</label>
+                        <div class="upload-zone" id="drop-zone">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--blush)" stroke-width="2" style="margin-bottom: 12px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                            <p>Glissez une image ici ou cliquez pour parcourir</p>
+                            <input type="file" id="p-file" accept="image/*">
+                        </div>
+                        <img id="img-preview" class="upload-preview">
+                        <input type="hidden" id="p-img-url">
+                    </div>
+                    <div class="form-group" style="display: flex; align-items: center; gap: 12px; grid-column: span 2;">
+                        <label class="switch">
+                            <input type="checkbox" id="p-active" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <span style="font-weight: 600; font-size: 14px;">Produit actif (visible sur le site)</span>
+                    </div>
+                </div>
+                <div style="margin-top: 40px; display: flex; gap: 16px; justify-content: flex-end;">
+                    <button type="button" class="btn-ghost" onclick="closeModal()">Annuler</button>
+                    <button type="submit" class="btn-atypique" id="save-btn">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- DELETE CONFIRM MODAL -->
+    <div class="modal" id="confirm-modal">
+        <div class="modal-content confirm-card">
+            <h3>Supprimer le produit ?</h3>
+            <p>Cette action est irréversible. Le produit sera retiré du catalogue.</p>
+            <div class="confirm-actions">
+                <button class="btn-ghost" onclick="document.getElementById('confirm-modal').classList.remove('active')">Annuler</button>
+                <button class="btn-atypique" id="confirm-delete-btn" style="background: #d63031;">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://127.0.0.1:8000';
+        let products = [];
+        let categories = [];
+        let editingId = null;
+
+        // AUTH CHECK
+        function checkAuth() {
+            const token = localStorage.getItem('mia_token');
+            if (!token) {
+                showLogin();
+            } else {
+                showDash();
+                loadCategories();
+                loadProducts();
+            }
+        }
+
+        function showLogin() {
+            document.getElementById('login-page').style.display = 'flex';
+            document.getElementById('admin-dash').style.display = 'none';
+        }
+
+        function showDash() {
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('admin-dash').style.display = 'block';
+        }
+
+        function logout() {
+            localStorage.removeItem('mia_token');
+            showLogin();
+        }
+
+        // LOGIN
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            const errorEl = document.getElementById('login-error');
+            errorEl.textContent = '';
+
+            const formData = new FormData();
+            formData.append('username', user);
+            formData.append('password', pass);
+
+            try {
+                const res = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    body: formData
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    localStorage.setItem('mia_token', data.access_token);
+                    showDash();
+                    loadProducts();
+                } else {
+                    errorEl.textContent = 'Identifiants incorrects.';
+                }
+            } catch (err) {
+                errorEl.textContent = 'Erreur de connexion au serveur.';
+            }
+        });
+
+        // LOAD PRODUCTS
+        async function loadProducts() {
+            try {
+                const res = await fetch(`${API_URL}/products`);
+                products = await res.json();
+                renderProducts();
+            } catch (err) {
+                showToast('Erreur lors du chargement des produits');
+            }
+        }
+
+        async function loadCategories() {
+            try {
+                const res = await fetch(`${API_URL}/categories`);
+                categories = await res.json();
+                renderCategories();
+                updateCategorySelect();
+            } catch (err) {
+                showToast('Erreur lors du chargement des catégories');
+            }
+        }
+
+        function renderCategories() {
+            const list = document.getElementById('categories-list');
+            list.innerHTML = categories.map(cat => `
+                <div class="product-item">
+                    <div class="item-info">
+                        <h4>${cat}</h4>
+                    </div>
+                    <div class="actions">
+                        <div class="btn-icon delete" onclick="deleteCategory('${cat}')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateCategorySelect() {
+            const select = document.getElementById('p-cat');
+            const currentVal = select.value;
+            select.innerHTML = categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+            if (currentVal && categories.includes(currentVal)) select.value = currentVal;
+        }
+
+        async function addCategory() {
+            const input = document.getElementById('new-cat-name');
+            const name = input.value.trim();
+            if (!name) return;
+
+            const formData = new FormData();
+            formData.append('cat', name);
+
+            try {
+                const res = await fetch(`${API_URL}/admin/categories`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('mia_token')}` },
+                    body: formData
+                });
+                if (res.ok) {
+                    input.value = '';
+                    loadCategories();
+                    showToast('Catégorie ajoutée');
+                }
+            } catch (err) {
+                showToast('Erreur ajout catégorie');
+            }
+        }
+
+        async function deleteCategory(name) {
+            if (!confirm(`Supprimer la catégorie "${name}" ?`)) return;
+            try {
+                const res = await fetch(`${API_URL}/admin/categories/${encodeURIComponent(name)}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('mia_token')}` }
+                });
+                if (res.ok) {
+                    loadCategories();
+                    showToast('Catégorie supprimée');
+                }
+            } catch (err) {
+                showToast('Erreur suppression catégorie');
+            }
+        }
+
+        function renderProducts() {
+            const list = document.getElementById('products-list');
+            list.innerHTML = products.map(p => `
+                <div class="product-item">
+                    <img src="${p.img.startsWith('http') ? p.img : p.img}" class="item-img" onerror="this.src=''">
+                    <div class="item-info">
+                        <div class="item-meta">
+                            <span>${p.cat}</span>
+                            ${p.badge ? `<span class="badge badge-${p.badge.toLowerCase().replace(' ', '')}">${p.badge}</span>` : ''}
+                        </div>
+                        <h4>${p.name}</h4>
+                        <div class="item-price">${p.price.toLocaleString()} FCFA</div>
+                    </div>
+                    <div class="actions">
+                        <label class="switch">
+                            <input type="checkbox" ${p.active ? 'checked' : ''} onchange="toggleActive(${p.id}, this.checked)">
+                            <span class="slider"></span>
+                        </label>
+                        <div class="btn-icon" onclick="openProductModal(${p.id})">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                        </div>
+                        <div class="btn-icon delete" onclick="confirmDelete(${p.id})">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // MODAL ACTIONS
+        function openProductModal(id = null) {
+            editingId = id;
+            const modal = document.getElementById('product-modal');
+            const form = document.getElementById('product-form');
+            form.reset();
+            document.getElementById('img-preview').style.display = 'none';
+            document.getElementById('p-img-url').value = '';
+
+            if (id) {
+                document.getElementById('modal-title').textContent = 'Modifier le produit';
+                const p = products.find(prod => prod.id === id);
+                document.getElementById('p-name').value = p.name;
+                document.getElementById('p-price').value = p.price;
+                document.getElementById('p-cat').value = p.cat;
+                document.getElementById('p-badge').value = p.badge || '';
+                document.getElementById('p-desc').value = p.desc;
+                document.getElementById('p-active').checked = p.active;
+                document.getElementById('p-img-url').value = p.img;
+                
+                const preview = document.getElementById('img-preview');
+                preview.src = p.img;
+                preview.style.display = 'block';
+            } else {
+                document.getElementById('modal-title').textContent = 'Nouveau Produit';
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('product-modal').classList.remove('active');
+        }
+
+        // IMAGE UPLOAD
+        const fileInput = document.getElementById('p-file');
+        const dropZone = document.getElementById('drop-zone');
+
+        fileInput.addEventListener('change', e => handleFile(e.target.files[0]));
+        dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+        dropZone.addEventListener('drop', e => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            handleFile(e.dataTransfer.files[0]);
+        });
+
+        async function handleFile(file) {
+            if (!file) return;
+            
+            // Preview locally
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const preview = document.getElementById('img-preview');
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+
+            // Upload to server
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const res = await fetch(`${API_URL}/admin/upload`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('mia_token')}` },
+                    body: formData
+                });
+                if (res.status === 401) return logout();
+                const data = await res.json();
+                document.getElementById('p-img-url').value = data.url;
+            } catch (err) {
+                showToast('Erreur lors de l\'upload');
+            }
+        }
+
+        // SAVE PRODUCT
+        document.getElementById('product-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const saveBtn = document.getElementById('save-btn');
+            saveBtn.disabled = true;
+
+            const productData = {
+                id: editingId || 0,
+                name: document.getElementById('p-name').value,
+                price: parseInt(document.getElementById('p-price').value),
+                cat: document.getElementById('p-cat').value,
+                badge: document.getElementById('p-badge').value || null,
+                desc: document.getElementById('p-desc').value,
+                active: document.getElementById('p-active').checked,
+                img: document.getElementById('p-img-url').value || 'images/placeholder.jpg'
+            };
+
+            const method = editingId ? 'PUT' : 'POST';
+            const url = editingId ? `${API_URL}/admin/products/${editingId}` : `${API_URL}/admin/products`;
+
+            try {
+                const res = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('mia_token')}`
+                    },
+                    body: JSON.stringify(productData)
+                });
+
+                if (res.status === 401) return logout();
+                
+                if (res.ok) {
+                    showToast(editingId ? 'Produit modifié !' : 'Produit créé !');
+                    closeModal();
+                    loadProducts();
+                }
+            } catch (err) {
+                showToast('Erreur lors de l\'enregistrement');
+            } finally {
+                saveBtn.disabled = false;
+            }
+        });
+
+        // TOGGLE ACTIVE
+        async function toggleActive(id, active) {
+            const p = products.find(prod => prod.id === id);
+            if (!p) return;
+            
+            const updated = { ...p, active };
+            try {
+                const res = await fetch(`${API_URL}/admin/products/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('mia_token')}`
+                    },
+                    body: JSON.stringify(updated)
+                });
+                if (res.status === 401) return logout();
+                if (res.ok) {
+                    showToast('Statut mis à jour');
+                    loadProducts();
+                }
+            } catch (err) {
+                showToast('Erreur de mise à jour');
+            }
+        }
+
+        // DELETE
+        let idToDelete = null;
+        function confirmDelete(id) {
+            idToDelete = id;
+            document.getElementById('confirm-modal').classList.add('active');
+        }
+
+        document.getElementById('confirm-delete-btn').addEventListener('click', async () => {
+            if (!idToDelete) return;
+            try {
+                const res = await fetch(`${API_URL}/admin/products/${idToDelete}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('mia_token')}` }
+                });
+                if (res.status === 401) return logout();
+                if (res.ok) {
+                    showToast('Produit supprimé');
+                    document.getElementById('confirm-modal').classList.remove('active');
+                    loadProducts();
+                }
+            } catch (err) {
+                showToast('Erreur de suppression');
+            }
+        });
+
+        // UTILS
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('active');
+            setTimeout(() => toast.classList.remove('active'), 3000);
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            document.getElementById(`tab-${tab}`).classList.add('active');
+            
+            document.querySelectorAll('.admin-view').forEach(v => v.style.display = 'none');
+            document.getElementById(`view-${tab}`).style.display = 'block';
+            
+            if (window.innerWidth <= 768) toggleSidebar();
+        }
+
+        function toggleSidebar() {
+            document.getElementById('admin-sidebar').classList.toggle('active');
+            document.getElementById('sidebar-overlay').classList.toggle('active');
+        }
+
+        function togglePasswordVisibility() {
+            const passInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eye-icon');
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                eyeIcon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+            } else {
+                passInput.type = 'password';
+                eyeIcon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+            }
+        }
+
+        // Init
+        checkAuth();
+    </script>
+</body>
+</html>

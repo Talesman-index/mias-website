@@ -77,15 +77,16 @@
 
         /* NAVBAR */
         nav#navbar {
-            position: fixed; top: 24px; left: 5%; right: 5%; height: 90px;
+            position: fixed; top: 24px; left: 5%; right: 5%; height: 120px;
             background: rgba(245, 249, 250, 0.85); backdrop-filter: blur(25px);
             border-radius: 100px; display: flex; align-items: center; justify-content: space-between;
             padding: 0 40px; z-index: 1000; border: 1px solid rgba(61, 130, 153, 0.25);
             transition: var(--transition);
         }
-        nav#navbar.scrolled { top: 12px; height: 72px; background: var(--white); box-shadow: 0 10px 40px rgba(26, 43, 51, 0.08); }
+        nav#navbar.scrolled { top: 12px; height: 80px; background: var(--white); box-shadow: 0 10px 40px rgba(26, 43, 51, 0.08); }
+        nav#navbar.scrolled .logo-img { height: 60px; }
         
-        .logo-img { height: 64px; width: auto; object-fit: contain; display: block; }
+        .logo-img { height: 90px; width: auto; object-fit: contain; display: block; }
 
         .nav-links { display: flex; gap: 36px; }
         .nav-links a { font-weight: 600; font-size: 14px; color: var(--bark); opacity: 0.6; position: relative; }
@@ -139,6 +140,10 @@
         @keyframes morph { 
             0% { border-radius: 60% 40% 70% 30% / 40% 50% 60% 40%; }
             100% { border-radius: 35% 65% 45% 55% / 55% 45% 65% 35%; }
+        }
+
+        @media (max-width: 768px) {
+            .footer-nav-block { display: none !important; }
         }
 
         /* RESPONSIVE RECTIFICATIONS STRICTES */
@@ -1110,7 +1115,7 @@
             <div class="footer-grid">
                 <div class="reveal-blur">
                     <a href="#" class="logo-link footer-logo" onclick="navigate('home', event)" style="margin-bottom:30px; display:block;">
-                        <img src="logo_mia's.png" alt="Mia's Crochet Boutique" class="logo-img" style="filter: brightness(0) invert(1); height:64px;">
+                        <img src="logo_mia's.png" alt="Mia's Crochet Boutique" class="logo-img" style="filter: brightness(0) invert(1); height:100px;">
                     </a>
                     <p style="opacity:0.9; margin-bottom:30px; max-width:300px; color:var(--white);">Artisanat textile poétique et créations au crochet faites main avec amour à Cotonou, Bénin.</p>
                     <div style="display:flex; gap:20px;">
@@ -1126,7 +1131,7 @@
                     </div>
                 </div>
                 
-                <div class="reveal-blur" style="transition-delay:0.2s;">
+                <div class="reveal-blur footer-nav-block" style="transition-delay:0.2s;">
                     <h4 style="margin-bottom:30px; font-size:14px; text-transform:uppercase; letter-spacing:2px; font-weight:800; color:var(--blush);">Navigation</h4>
                     <nav style="display:grid; gap:16px;">
                         <a href="#" class="footer-link" onclick="navigate('home', event)">Accueil</a>
@@ -1157,7 +1162,7 @@
 
                 <div class="reveal-blur" style="transition-delay:0.6s;">
                     <h4 style="margin-bottom:30px; font-size:14px; text-transform:uppercase; letter-spacing:2px; font-weight:800; color:var(--blush);">Newsletter</h4>
-                    <p style="opacity:0.9; font-size:14px; margin-bottom:20px; color:var(--white);">Inscrivez-vous pour recevoir nos nouvelles collections et dates d'ateliers.</p>
+                    <p style="opacity:0.9; font-size:14px; margin-bottom:20px; color:var(--white);">Inscrivez-vous pour recevoir nos nouvelles <br> collections et dates d'ateliers.</p>
                     <form class="newsletter-form" onsubmit="alert('Merci de votre inscription !'); return false;">
                         <input type="email" placeholder="Votre email..." required>
                         <button type="submit">OK</button>
@@ -1178,20 +1183,48 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const state = {
-                products: [
-                    { id: 1, name: "Bouquet Rose Éternelle", price: 8500, cat: "Fleurs", img: "images/anya-chernykh-jq0B9v_rYtg-unsplash.jpg", desc: "Un bouquet délicat crocheté à la main, parfait pour décorer votre intérieur durablement." },
-                    { id: 2, name: "Top Crochet 'Solstice'", price: 15000, cat: "Vêtements", img: "images/dwayne-joe-MBi1x-HBjKA-unsplash.jpg", desc: "Top ajouré réalisé avec un fil de coton naturel, idéal pour les journées ensoleillées." },
-                    { id: 3, name: "Box Cadeau 'Douceur'", price: 18000, cat: "Accessoires", img: "images/maria-kovalets-RgEaD36YYGI-unsplash.jpg", desc: "Une sélection de créations artisanales comprenant un chouchou, un porte-clés et une mini fleur." },
-                    { id: 4, name: "Sac Cabas 'Mistral'", price: 22000, cat: "Accessoires", img: "images/paul-hanaoka-4nabmlliGdU-unsplash.jpg", desc: "Un sac spacieux et robuste, entièrement doublé, pour vos sorties estivales." },
-                    { id: 5, name: "Robe de Plage 'Ondine'", price: 35000, cat: "Vêtements", img: "images/dwayne-joe-MXhcH9EIEBw-unsplash.jpg", desc: "Une robe longue et légère aux motifs complexes, une pièce d'exception." },
-                    { id: 6, name: "Bouquet de Marguerites", price: 7500, cat: "Fleurs", img: "images/dwayne-joe-f2WM_P7mQqM-unsplash.jpg", desc: "Sept marguerites blanches au cœur jaune pour illuminer votre bureau." },
-                    { id: 7, name: "Bustier 'Coucher de Soleil'", price: 12500, cat: "Vêtements", img: "images/dwayne-joe-hF_Ygbj0HQo-unsplash.jpg", desc: "Un bustier coloré aux nuances chaudes, ajustable pour un confort optimal." },
-                    { id: 8, name: "Chouchou 'Pétale'", price: 2500, cat: "Accessoires", img: "images/lizzi-sassman-M7ZuRWaaevw-unsplash.jpg", desc: "Un accessoire délicat pour vos cheveux, doux et protecteur." },
-                    { id: 9, name: "Vase de Tulipes", price: 12000, cat: "Fleurs", img: "images/anya-chernykh-jq0B9v_rYtg-unsplash.jpg", desc: "Un assortiment de tulipes aux couleurs vives." }
-                ],
+                products: [],
                 cart: [],
                 currentCategory: 'all'
             };
+
+            async function loadProducts() {
+                try {
+                    // Charger les catégories
+                    const catRes = await fetch('http://127.0.0.1:8000/categories');
+                    const categories = await catRes.json();
+                    renderFilters(categories);
+
+                    // Charger les produits
+                    const res = await fetch('http://127.0.0.1:8000/products');
+                    const data = await res.json();
+                    // Filtre pour n'afficher que les produits actifs sur le site
+                    state.products = data.filter(p => p.active !== false);
+                    renderHome();
+                } catch (err) {
+                    console.error("Erreur chargement produits:", err);
+                }
+            }
+
+            function renderFilters(categories) {
+                const container = document.getElementById('shop-filters');
+                if (!container) return;
+                const currentCat = state.currentCategory || 'all';
+                container.innerHTML = `
+                    <button class="filter-btn ${currentCat === 'all' ? 'active' : ''}" data-cat="all">Tout</button>
+                    ${categories.map(cat => `
+                        <button class="filter-btn ${currentCat === cat ? 'active' : ''}" data-cat="${cat}">${cat}</button>
+                    `).join('')}
+                `;
+                
+                container.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        container.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        renderShop(btn.dataset.cat);
+                    });
+                });
+            }
 
             window.navigate = function(id, e) {
                 if (e) e.preventDefault();
@@ -1232,15 +1265,6 @@
                 `;
             }
 
-            const filterBtns = document.querySelectorAll('.filter-btn');
-            filterBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    filterBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    btn.focus();
-                    renderShop(btn.dataset.cat);
-                });
-            });
 
             window.toggleOverlay = function(id, force) {
                 const el = document.getElementById('overlay-'+id);
@@ -1591,6 +1615,7 @@ Voici quelques détails supplémentaires : `;
             }
 
             window.addEventListener('scroll', handleScroll);
+            loadProducts();
             navigate('home');
         });
     </script>
