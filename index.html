@@ -108,6 +108,11 @@
         .burger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
         .burger.active span:nth-child(2) { opacity: 0; }
         .burger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+        @media (max-width: 768px) {
+            nav#navbar { height: 80px; top: 12px; padding: 0 20px; }
+            .logo-img { height: 50px; }
+            .burger { width: 44px; height: 44px; }
+        }
 
         /* HERO */
         .hero { min-height: 100vh; display: grid; grid-template-columns: 1.1fr 0.9fr; align-items: center; padding: 120px 5% 80px; gap: 60px; position: relative; overflow: hidden; }
