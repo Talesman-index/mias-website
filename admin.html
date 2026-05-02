@@ -411,6 +411,16 @@
 
         // AUTH CHECK
         async function checkAuth() {
+            if (SUPABASE_URL === 'VOTRE_URL_SUPABASE') {
+                if (window.location.pathname !== '/admin.html') {
+                    window.location.href = '/admin.html';
+                    return;
+                }
+                const token = localStorage.getItem('mia_token');
+                if (!token) showLogin(); 
+                else { showDash(); loadCategories(); loadProducts(); }
+                return;
+            }
             const { data: { session } } = await _supabase.auth.getSession();
             if (!session) {
                 showLogin();
@@ -422,15 +432,17 @@
         }
 
         // Écouter les changements d'auth
-        _supabase.auth.onAuthStateChange((event, session) => {
-            if (event === 'SIGNED_IN') {
-                showDash();
-                loadCategories();
-                loadProducts();
-            } else if (event === 'SIGNED_OUT') {
-                showLogin();
-            }
-        });
+        if (SUPABASE_URL !== 'VOTRE_URL_SUPABASE') {
+            _supabase.auth.onAuthStateChange((event, session) => {
+                if (event === 'SIGNED_IN') {
+                    showDash();
+                    loadCategories();
+                    loadProducts();
+                } else if (event === 'SIGNED_OUT') {
+                    showLogin();
+                }
+            });
+        }
 
         function showLogin() {
             document.getElementById('login-page').style.display = 'flex';
@@ -454,6 +466,22 @@
             const errorEl = document.getElementById('login-error');
             errorEl.textContent = '';
 
+            if (SUPABASE_URL === 'VOTRE_URL_SUPABASE') {
+                // Login Local
+                const formData = new FormData();
+                formData.append('username', email);
+                formData.append('password', password);
+                try {
+                    const res = await fetch('http://127.0.0.1:8000/auth/login', { method: 'POST', body: formData });
+                    if (res.ok) {
+                        const data = await res.json();
+                        localStorage.setItem('mia_token', data.access_token);
+                        showDash(); loadCategories(); loadProducts();
+                    } else { errorEl.textContent = 'Identifiants incorrects.'; }
+                } catch (err) { errorEl.textContent = 'Erreur de connexion au serveur local.'; }
+                return;
+            }
+
             const { error } = await _supabase.auth.signInWithPassword({ email, password });
             if (error) {
                 errorEl.textContent = 'Identifiants incorrects ou utilisateur non trouvé.';
@@ -462,6 +490,13 @@
 
         // LOAD PRODUCTS
         async function loadProducts() {
+            if (SUPABASE_URL === 'VOTRE_URL_SUPABASE') {
+                try {
+                    const res = await fetch('http://127.0.0.1:8000/products');
+                    products = await res.json(); renderProducts();
+                } catch (err) { console.error(err); }
+                return;
+            }
             try {
                 const { data, error } = await _supabase
                     .from('products')
@@ -477,6 +512,13 @@
         }
 
         async function loadCategories() {
+            if (SUPABASE_URL === 'VOTRE_URL_SUPABASE') {
+                try {
+                    const res = await fetch('http://127.0.0.1:8000/categories');
+                    categories = await res.json(); renderCategories(); updateCategorySelect();
+                } catch (err) { console.error(err); }
+                return;
+            }
             try {
                 const { data, error } = await _supabase
                     .from('categories')

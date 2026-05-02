@@ -1195,6 +1195,21 @@
             const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
             async function loadProducts() {
+                // FALLBACK : Si les clés ne sont pas configurées, on utilise l'API locale
+                if (SUPABASE_URL === 'VOTRE_URL_SUPABASE') {
+                    console.log("Mode Local Actif (Pas de clés Supabase)");
+                    try {
+                        const catRes = await fetch('http://127.0.0.1:8000/categories');
+                        const categories = await catRes.json();
+                        renderFilters(categories);
+                        const res = await fetch('http://127.0.0.1:8000/products');
+                        const data = await res.json();
+                        state.products = data.filter(p => p.active !== false);
+                        renderHome();
+                    } catch (err) { console.error("Erreur Local:", err); }
+                    return;
+                }
+
                 try {
                     // Charger les catégories depuis Supabase
                     const { data: categories, error: catError } = await _supabase
@@ -1628,6 +1643,7 @@ Voici quelques détails supplémentaires : `;
                     }
                 });
             }
+
 
             window.addEventListener('scroll', handleScroll);
             loadProducts();
