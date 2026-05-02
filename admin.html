@@ -403,7 +403,7 @@
         // CONFIGURATION SUPABASE
         const SUPABASE_URL = 'VOTRE_URL_SUPABASE'; // À REMPLACER
         const SUPABASE_KEY = 'VOTRE_ANON_KEY';    // À REMPLACER
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const _supabase = (SUPABASE_URL !== 'VOTRE_URL_SUPABASE') ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
         let products = [];
         let categories = [];
