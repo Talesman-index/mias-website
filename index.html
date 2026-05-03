@@ -1236,7 +1236,10 @@
 
                     if (prodError) throw prodError;
                     
-                    state.products = data;
+                    state.products = data.map(p => ({
+                        ...p,
+                        desc: p.description || p.desc // Handle both naming conventions
+                    }));
                     renderHome();
                 } catch (err) {
                     console.error("Erreur Supabase:", err);
@@ -1288,6 +1291,9 @@
                 if (!grid) return;
                 const filtered = cat === 'all' ? state.products : state.products.filter(p => p.cat === cat);
                 grid.innerHTML = filtered.map(p => productCard(p)).join('');
+                if (filtered.length === 0) {
+                    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 40px; opacity: 0.5;">Aucun produit trouvé dans cette catégorie.</p>';
+                }
                 handleScroll();
             }
 

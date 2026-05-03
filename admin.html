@@ -187,9 +187,9 @@
 
         /* RESPONSIVE BASE */
         @media (max-width: 1024px) {
-            .admin-sidebar { width: 80px; padding: 40px 10px; }
-            .sidebar-link span { display: none; }
-            .admin-content { margin-left: 80px; padding: 100px 30px; }
+            .admin-sidebar { width: 260px; padding: 40px 20px; }
+            .sidebar-link span { display: flex; }
+            .admin-content { margin-left: 260px; padding: 120px 40px; }
         }
 
         @media (max-width: 768px) {
@@ -229,6 +229,9 @@
             .modal-content { padding: 30px 20px; border-radius: 0; min-height: 100vh; max-height: 100vh; }
             .form-grid { grid-template-columns: 1fr; gap: 16px; }
             .modal-header h3 { font-size: 24px; }
+            
+            /* Sidebar Text Visibility Mobile */
+            .sidebar-link span { display: block !important; }
         }
 
         .burger-admin { display: none; }
