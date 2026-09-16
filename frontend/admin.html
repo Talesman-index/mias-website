@@ -589,8 +589,15 @@
             if (!name) return;
 
             try {
-                const { error } = await _supabase.from('categories').insert([{ name }]);
-                if (error) throw error;
+                const token = localStorage.getItem('mia_token');
+                const formData = new FormData();
+                formData.append('cat', name);
+                const res = await fetch('http://127.0.0.1:8000/admin/categories', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: formData
+                });
+                if (!res.ok) throw new Error('Erreur API');
                 input.value = '';
                 loadCategories();
                 showToast('Catégorie ajoutée');
@@ -602,8 +609,12 @@
         async function deleteCategory(name) {
             if (!confirm(`Supprimer la catégorie "${name}" ?`)) return;
             try {
-                const { error } = await _supabase.from('categories').delete().eq('name', name);
-                if (error) throw error;
+                const token = localStorage.getItem('mia_token');
+                const res = await fetch(`http://127.0.0.1:8000/admin/categories/${encodeURIComponent(name)}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!res.ok) throw new Error('Erreur API');
                 loadCategories();
                 showToast('Catégorie supprimée');
             } catch (err) {
@@ -699,23 +710,22 @@
             };
             reader.readAsDataURL(file);
 
-            // Upload to Supabase Storage
+            // Upload to FastAPI
             try {
-                const fileExt = file.name.split('.').pop();
-                const fileName = `${Math.random()}.${fileExt}`;
-                const filePath = `${fileName}`;
+                const token = localStorage.getItem('mia_token');
+                const formData = new FormData();
+                formData.append('file', file);
 
-                const { data, error } = await _supabase.storage
-                    .from('product-images')
-                    .upload(filePath, file);
+                const res = await fetch('http://127.0.0.1:8000/admin/upload', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: formData
+                });
 
-                if (error) throw error;
+                if (!res.ok) throw new Error('Erreur upload');
+                const data = await res.json();
 
-                const { data: { publicUrl } } = _supabase.storage
-                    .from('product-images')
-                    .getPublicUrl(filePath);
-
-                document.getElementById('p-img-url').value = publicUrl;
+                document.getElementById('p-img-url').value = data.url;
                 showToast('Image téléchargée !');
             } catch (err) {
                 console.error(err);
@@ -740,21 +750,22 @@
             };
 
             try {
-                let error;
-                if (editingId) {
-                    const { error: err } = await _supabase
-                        .from('products')
-                        .update(productData)
-                        .eq('id', editingId);
-                    error = err;
-                } else {
-                    const { error: err } = await _supabase
-                        .from('products')
-                        .insert([productData]);
-                    error = err;
-                }
+                const token = localStorage.getItem('mia_token');
+                const method = editingId ? 'PUT' : 'POST';
+                const url = editingId 
+                    ? `http://127.0.0.1:8000/admin/products/${editingId}` 
+                    : 'http://127.0.0.1:8000/admin/products';
+                
+                const res = await fetch(url, {
+                    method,
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(productData)
+                });
 
-                if (error) throw error;
+                if (!res.ok) throw new Error('Erreur API');
                 
                 showToast(editingId ? 'Produit modifié !' : 'Produit créé !');
                 closeModal();
@@ -769,11 +780,20 @@
         // TOGGLE ACTIVE
         async function toggleActive(id, active) {
             try {
-                const { error } = await _supabase
-                    .from('products')
-                    .update({ active })
-                    .eq('id', id);
-                if (error) throw error;
+                const p = products.find(prod => prod.id === id);
+                if (!p) return;
+                p.active = active;
+
+                const token = localStorage.getItem('mia_token');
+                const res = await fetch(`http://127.0.0.1:8000/admin/products/${id}`, {
+                    method: 'PUT',
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(p)
+                });
+                if (!res.ok) throw new Error('Erreur API');
                 showToast('Statut mis à jour');
                 loadProducts();
             } catch (err) {
@@ -791,16 +811,17 @@
         document.getElementById('confirm-delete-btn').addEventListener('click', async () => {
             if (!idToDelete) return;
             try {
-                const { error } = await _supabase
-                    .from('products')
-                    .delete()
-                    .eq('id', idToDelete);
-                if (error) throw error;
+                const token = localStorage.getItem('mia_token');
+                const res = await fetch(`http://127.0.0.1:8000/admin/products/${idToDelete}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!res.ok) throw new Error('Erreur API');
                 showToast('Produit supprimé');
                 document.getElementById('confirm-modal').classList.remove('active');
                 loadProducts();
             } catch (err) {
-                showToast('Erreur de suppression');
+                showToast('Erreur suppression produit');
             }
         });
 

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="favicon_mias.png">
+    <title>Mia's Crochet — Artisanat textile poétique</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Petrona:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="toast">Produit ajouté !</div>
+    <a href="https://wa.me/2290151875885" class="wa-float" target="_blank">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.941-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217s.231.006.332.009c.109.004.258-.041.404.314.145.356.497 1.214.541 1.301.043.087.072.188.014.303-.058.116-.087.188-.173.289l-.26.303c-.087.101-.177.211-.077.383.1.173.444.731.953 1.185.656.584 1.209.765 1.382.852s.303.072.419-.058c.116-.13.497-.578.63-.773.13-.195.26-.159.44-.094.178.065 1.133.535 1.328.637.195.101.325.152.373.235.048.083.048.484-.096.889z"/></svg>
+    </a>
+
+    <nav id="navbar">
+        <a href="#" class="logo-link" onclick="navigate('home', event)">
+            <img src="logo_mia's.png" alt="Mia's Crochet Boutique" class="logo-img">
+        </a>
+        <div class="nav-links">
+            <a href="#" class="nav-item active" data-page="home" onclick="navigate('home', event)">Accueil</a>
+            <a href="#" class="nav-item" data-page="boutique" onclick="navigate('boutique', event)">Boutique</a>
+            <a href="#" class="nav-item" data-page="galerie" onclick="navigate('galerie', event)">Galerie</a>
+            <a href="#" class="nav-item" data-page="services" onclick="navigate('services', event)">Services</a>
+            <a href="#" class="nav-item" data-page="about" onclick="navigate('about', event)">À Propos</a>
+        </div>
+        <div class="nav-right" style="display:flex; align-items:center; gap:24px;">
+            <div class="cart-trigger" onclick="toggleOverlay('cart')" style="position:relative; cursor:pointer;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                <span id="cart-count" style="position:absolute; top:-8px; right:-8px; background:var(--terracotta); color:white; font-size:10px; font-weight:800; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center;">0</span>
+            </div>
+            <div class="burger" id="burger-menu"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+
+    <div class="mobile-nav-backdrop" id="nav-backdrop" onclick="toggleMobileNav(false)"></div>
+    <div class="mobile-nav" id="mobile-nav">
+        <!-- DECORATIVE ELEMENTS -->
+        <img src="images/hook_illus.png" class="illus-decor" style="top:20%; right:-10%; width:300px; opacity:0.05; transform:rotate(-20deg);">
+        <img src="images/botanical_stitch.png" class="illus-decor" style="bottom:10%; left:-5%; width:250px; opacity:0.05; transform:rotate(15deg);">
+
+        <div class="mobile-nav-header">
+            <a href="#" class="logo-link" onclick="navigate('home', event)">
+                <img src="logo_mia's.png" alt="Mia's" class="logo-img" style="height:64px;">
+            </a>
+            <div class="mobile-nav-close" onclick="toggleMobileNav(false)">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </div>
+        </div>
+
+        <span class="mobile-section-label">Navigation</span>
+        <div class="mobile-links">
+            <a href="#" onclick="navigate('home', event)"><span>01</span> Accueil</a>
+            <a href="#" onclick="navigate('boutique', event)"><span>02</span> Boutique</a>
+            <a href="#" onclick="navigate('galerie', event)"><span>03</span> Galerie</a>
+            <a href="#" onclick="navigate('services', event)"><span>04</span> Services</a>
+            <a href="#" onclick="navigate('about', event)"><span>05</span> L'Atelier</a>
+            <a href="#" onclick="navigate('contact', event)"><span>06</span> Contact</a>
+        </div>
+
+        <div class="mobile-contact-info">
+            <span class="mobile-section-label">Contact</span>
+            <div class="mobile-contact-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                Cotonou, Bénin — Quartier Haie Vive
+            </div>
+            <div class="mobile-contact-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                +229 01 51 87 58 85
+            </div>
+            <div class="mobile-socials">
+                <a href="#" class="mobile-social-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></a>
+                <a href="#" class="mobile-social-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+            </div>
+        </div>
+    </div>
+
+    <main id="spa-container">
+        <!-- HOME -->
+        <div id="page-home" class="page active">
+            <section class="hero">
+                <img src="images/hook_illus.png" class="illus-decor illus-1" alt="Hook">
+                <img src="images/botanical_stitch.png" class="illus-decor illus-2" alt="Stitch">
+                <div class="hero-text reveal">
+                    <span class="tagline">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle; margin-right:4px;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        Artisanat textile poétique
+                    </span>
+                    <h1 class="hero-title">Chaque fil, une <span class="underline">histoire</span> tissée pour vous.</h1>
+                    <p style="margin-bottom: 48px; max-width: 550px; font-size: 20px;">Des créations uniques au crochet, conçues avec patience au Bénin pour sublimer votre quotidien.</p>
+                    <button class="btn-atypique" onclick="navigate('boutique', event)">Explorer la boutique</button>
+                </div>
+                <div class="hero-img-wrap reveal" id="hero-img-container">
+                    <div class="floating-element" style="top:-10%; left:10%; width:40px; height:40px;"></div>
+                    <div class="floating-element" style="bottom:10%; right:-5%; width:80px; height:80px; background:var(--blush); opacity:0.1;"></div>
+                    <div class="hero-mask" id="hero-tilt-target">
+                        <img src="images/hero-blue-dress.jpg" alt="Robe Bleue Crochet" onerror="this.style.background='#eee';this.src=''">
+                    </div>
+                </div>
+
+                <div class="marquee">
+                    <div class="marquee-content">
+                        <div class="marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Fleurs éternelles</div>
+                        <div class="marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Tenues personnalisées</div>
+                        <div class="marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Décoration événementielle</div>
+                        <div class="marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Savoir-faire local</div>
+                        <div class="marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Fleurs éternelles</div>
+                        <div class="marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Tenues personnalisées</div>
+                        <div class="marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Décoration événementielle</div>
+                        <div class="marquee-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Savoir-faire local</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-padding">
+                <div class="container">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:100px; align-items:center;" class="grid-2-col-resp">
+                        <img src="images/dwayne-joe-MBi1x-HBjKA-unsplash.jpg" style="width:100%; border-radius:40px; transform:rotate(-2deg);" class="reveal">
+                        <div class="reveal">
+                            <span class="tagline">Notre Processus</span>
+                            <h2 style="font-size:54px; margin-bottom:30px;">De la maille à l' <span class="underline">œuvre</span>.</h2>
+                            <p style="margin-bottom:20px;">Tout commence par le choix du fil. Nous privilégions le coton premium pour sa douceur et sa tenue. Chaque point est réalisé avec une précision chirurgicale.</p>
+                            <button class="btn-atypique" onclick="navigate('about', event)">Découvrir l'atelier</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FEATURED PRODUCTS -->
+            <section class="section-padding" style="background:var(--parchment); margin-top:100px;">
+                <div class="container">
+                    <h2 style="font-size:54px; margin-bottom:80px; text-align:center;">Nos <span class="underline">Pièces</span> Phares</h2>
+                    <div class="product-grid" id="home-featured"></div>
+                    <div style="text-align:center; margin-top:80px;">
+                        <button class="btn-atypique" onclick="navigate('boutique', event)">Toute la boutique</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CATEGORIES SECTION -->
+            <section class="section-padding" style="padding-top: 80px;">
+                <div class="container">
+                    <h2 class="reveal-blur" style="font-size:clamp(40px, 5vw, 54px); margin-bottom:60px; text-align:center;">Nos <span class="underline">Univers</span></h2>
+                    <div class="stagger-container categories-grid" style="display:grid; grid-template-columns: repeat(3, 1fr); gap:30px;">
+                        <div class="category-card" onclick="navigate('boutique'); renderShop('Fleurs')">
+                            <img src="images/anya-chernykh-jq0B9v_rYtg-unsplash.jpg" alt="Fleurs">
+                            <div class="category-overlay">
+                                <h3>Fleurs</h3>
+                                <p>Éternelles & Poétiques</p>
+                            </div>
+                        </div>
+                        <div class="category-card" onclick="navigate('boutique'); renderShop('Vêtements')">
+                            <img src="images/dwayne-joe-MBi1x-HBjKA-unsplash.jpg" alt="Vêtements">
+                            <div class="category-overlay">
+                                <h3>Vêtements</h3>
+                                <p>Slow Fashion Unique</p>
+                            </div>
+                        </div>
+                        <div class="category-card" onclick="navigate('boutique'); renderShop('Accessoires')">
+                            <img src="images/maria-kovalets-RgEaD36YYGI-unsplash.jpg" alt="Accessoires">
+                            <div class="category-overlay">
+                                <h3>Accessoires</h3>
+                                <p>Détails du Quotidien</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            
+
+            <section class="section-padding" id="home-services">
+                <div class="container">
+                    <span class="tagline reveal-blur" style="text-align:center; display:block;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle; margin-right:4px;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        Nos Services
+                    </span>
+                    <h2 class="reveal-blur" style="font-size:clamp(40px, 5vw, 64px); margin-bottom:80px; text-align:center;">Ce que nous <span class="underline">créons</span> pour vous.</h2>
+                    <div class="stagger-container" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:40px;">
+                        <div class="service-card-img">
+                            <div class="s-img"><img src="images/paul-hanaoka-4nabmlliGdU-unsplash.jpg" alt="Sur-Mesure"></div>
+                            <div class="s-content">
+                                <h3>Sur-Mesure</h3>
+                                <p>Des pièces uniques créées exclusivement pour votre morphologie et votre style.</p>
+                            </div>
+                        </div>
+                        <div class="service-card-img">
+                            <div class="s-img"><img src="images/lizzi-sassman-M7ZuRWaaevw-unsplash.jpg" alt="Ateliers"></div>
+                            <div class="s-content">
+                                <h3>Ateliers Crochet</h3>
+                                <p>Rejoignez nos sessions conviviales à Cotonou pour apprendre l'art du fil.</p>
+                            </div>
+                        </div>
+                        <div class="service-card-img">
+                            <div class="s-img"><img src="images/dwayne-joe-hF_Ygbj0HQo-unsplash.jpg" alt="Déco"></div>
+                            <div class="s-content">
+                                <h3>Déco Événement</h3>
+                                <p>Transformez vos espaces avec nos installations textiles poétiques.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            
+
+
+            <section class="section-padding">
+                <div class="container">
+                    <h2 class="reveal-blur" style="font-size:clamp(40px, 5vw, 54px); text-align:center; margin-bottom:80px;">Ils ont adopté <span class="underline">Mia's</span></h2>
+                    <div class="stagger-container" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap:40px;">
+                        <div class="testimonial-card">
+                            <p class="testimonial-text">"Une qualité exceptionnelle. On sent tout l'amour mis dans le travail. Mon top est devenu ma pièce préférée."</p>
+                            <h4 style="font-size:18px;">— Sarah L.</h4>
+                        </div>
+                        <div class="testimonial-card">
+                            <p class="testimonial-text">"Le bouquet de fleurs au crochet est magnifique et éternel. Un cadeau parfait qui a fait sensation."</p>
+                            <h4 style="font-size:18px;">— Marc D.</h4>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <section class="section-padding">
+                <div class="container" style="max-width:800px;">
+                    <h2 style="font-size:48px; margin-bottom:40px; text-align:center;">Questions <span class="underline">Fréquentes</span></h2>
+                    <div class="faq-list">
+                        <div class="faq-item" onclick="toggleFaq(this)">
+                            <div class="faq-trigger">Comment commander une pièce sur-mesure ?</div>
+                            <div class="faq-content"><p>Contactez-nous via le formulaire ou WhatsApp. Nous discuterons de vos envies et mesures.</p></div>
+                        </div>
+                        <div class="faq-item" onclick="toggleFaq(this)">
+                            <div class="faq-trigger">Quels sont les délais ?</div>
+                            <div class="faq-content"><p>Comptez 1 à 3 semaines selon l'ouvrage. Chaque pièce est unique.</p></div>
+                        </div>
+                        <div class="faq-item" onclick="toggleFaq(this)">
+                            <div class="faq-trigger">Quels types de fils utilisez-vous ?</div>
+                            <div class="faq-content"><p>Nous privilégions le coton premium certifié OEKO-TEX pour sa douceur et sa durabilité, ainsi que des mélanges de laine mérinos pour nos collections d'hiver.</p></div>
+                        </div>
+                        <div class="faq-item" onclick="toggleFaq(this)">
+                            <div class="faq-trigger">Proposez-vous des cartes cadeaux ?</div>
+                            <div class="faq-content"><p>Oui, nous proposons des cartes cadeaux digitales et physiques, valables sur toute la boutique et nos ateliers.</p></div>
+                        </div>
+                        <div class="faq-item" onclick="toggleFaq(this)">
+                            <div class="faq-trigger">Livrez-vous à l'international ?</div>
+                            <div class="faq-content"><p>Absolument. Nous expédions partout dans le monde via DHL et les services postaux locaux avec suivi en temps réel.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- BOUTIQUE -->
+        <div id="page-boutique" class="page">
+            <section class="section-padding">
+                <img src="images/yarn_illus.png" class="illus-decor illus-3" alt="Yarn">
+                <div class="container">
+                    <h2 style="font-size:72px; margin-bottom:40px;">La <span class="underline">Boutique</span></h2>
+                    <div id="shop-filters" style="display:flex; gap:12px; margin-bottom:60px; flex-wrap:wrap;">
+                        <button class="filter-btn active" data-cat="all">Tout</button>
+                        <button class="filter-btn" data-cat="Fleurs">Fleurs</button>
+                        <button class="filter-btn" data-cat="Vêtements">Vêtements</button>
+                        <button class="filter-btn" data-cat="Accessoires">Accessoires</button>
+                    </div>
+                    <div class="product-grid" id="shop-grid"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- GALERIE STORY -->
+        <div id="page-galerie" class="page">
+            <section class="section-padding">
+                <div class="container">
+                    <div style="text-align:center; margin-bottom:60px;">
+                        <span class="tagline">Lookbook Immersif</span>
+                        <h2 style="font-size:clamp(48px, 8vw, 72px);">Notre <span class="underline">Galerie</span></h2>
+                    </div>
+
+                    <div class="story-viewport" id="crochet-story">
+                        <div class="story-progress" id="story-progress"></div>
+                        <div class="nav-zone nav-zone-left" id="story-prev"></div>
+                        <div class="nav-zone nav-zone-right" id="story-next"></div>
+                        <div class="story-track" id="story-track">
+                            <!-- Injected by JS -->
+                        </div>
+                        <div class="story-thumbs-wrap">
+                            <div class="story-thumbs" id="story-thumbs"></div>
+                        </div>
+                    </div>
+                    
+                    <p style="text-align:center; margin-top:30px; font-size:14px; opacity:0.5;">Tap à droite pour avancer · Tap à gauche pour reculer</p>
+                </div>
+            </section>
+        </div>
+
+        <div id="page-services" class="page">
+            <section class="section-padding">
+                <div class="container">
+                    <h2 class="reveal-blur" style="font-size:clamp(54px, 8vw, 80px); margin-bottom:80px;">Savoir-faire & <span class="underline">Services</span></h2>
+                    <div style="display:grid; gap:120px;" class="services-page-grid">
+                        <!-- SERVICE 1 -->
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 450px), 1fr)); gap:80px; align-items:center;" class="reveal">
+                            <div class="service-img-frame">
+                                <img src="images/dwayne-joe-f2WM_P7mQqM-unsplash.jpg" alt="Sur-mesure">
+                            </div>
+                            <div>
+                                <span class="tagline">✦ Excellence</span>
+                                <h3 style="font-size:clamp(32px, 4vw, 48px); margin-bottom:24px;">Sur-Mesure</h3>
+                                <p style="font-size:clamp(16px, 2vw, 20px); margin-bottom:32px;">Une pièce unique conçue spécifiquement pour vous. Nous travaillons à partir de vos mesures pour un tombé parfait et un style qui vous ressemble vraiment. Du choix du coton à la couleur du fil, vous êtes au cœur de la création.</p>
+                                <button class="btn-atypique" onclick="navigate('contact')">Démarrer un projet</button>
+                            </div>
+                        </div>
+
+                        <!-- SERVICE 2 -->
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 450px), 1fr)); gap:80px; align-items:center;" class="reveal">
+                            <div style="order: 2;" class="service-img-frame">
+                                <img src="images/maria-kovalets-RgEaD36YYGI-unsplash.jpg" alt="Ateliers">
+                            </div>
+                            <div style="order: 1;">
+                                <span class="tagline">✦ Transmission</span>
+                                <h3 style="font-size:clamp(32px, 4vw, 48px); margin-bottom:24px;">Ateliers Crochet</h3>
+                                <p style="font-size:clamp(16px, 2vw, 20px); margin-bottom:32px;">Apprenez l'art du fil lors de nos sessions hebdomadaires à Cotonou. Tout le matériel est fourni, et vous repartez avec votre propre création en cours. Un moment de partage et de détente créative.</p>
+                                <button class="btn-atypique" onclick="navigate('contact')">Réserver une place</button>
+                            </div>
+                        </div>
+
+                        <!-- SERVICE 3 -->
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 450px), 1fr)); gap:80px; align-items:center;" class="reveal">
+                            <div class="service-img-frame">
+                                <img src="images/dwayne-joe-MXhcH9EIEBw-unsplash.jpg" alt="Event">
+                            </div>
+                            <div>
+                                <span class="tagline">✦ Prestige</span>
+                                <h3 style="font-size:clamp(32px, 4vw, 48px); margin-bottom:24px;">Décoration Event</h3>
+                                <p style="font-size:clamp(16px, 2vw, 20px); margin-bottom:32px;">Habillage textile pour mariages, dîners et shootings. Nous créons des backdrops, des centres de table et des accessoires photo en crochet pour apporter une touche organique et mémorable à vos événements.</p>
+                                <button class="btn-atypique" onclick="navigate('contact')">Demander un devis</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        
+
+        <!-- ABOUT -->
+        <div id="page-about" class="page">
+            <!-- ABOUT HERO -->
+            <section class="section-padding" style="background: var(--parchment); overflow: hidden;">
+                <div class="container">
+                    <div style="max-width: 900px; margin: 0 auto; text-align: center;" class="reveal-blur">
+                        <span class="tagline">L'Histoire de Mia's</span>
+                        <h2 style="font-size: clamp(48px, 8vw, 80px); line-height: 1.1; margin-bottom: 40px;">Plus qu'une maille, une <span class="underline">émotion</span>.</h2>
+                        <p style="font-size: 20px; opacity: 0.7; line-height: 1.6;">Mia's Crochet Boutique est née d'un rêve simple : redonner ses lettres de noblesse à l'artisanat textile béninois à travers la poésie du crochet.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PHILOSOPHY GRID -->
+            <section class="section-padding">
+                <div class="container">
+                    <div class="stagger-container" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:40px;">
+                        <div class="reveal-scale" style="background:var(--white); padding:60px 40px; border-radius:40px; border:1px solid var(--parchment); text-align:center;">
+                            <div style="width:80px; height:80px; background:var(--parchment); border-radius:50%; display:flex; align-items:center; justify-content:center; margin: 0 auto 30px; color:var(--terracotta);">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 1.4 8.2-1.2 10-8.4 9.8-8.4 9.8Z"/><path d="M11 21a7 7 0 0 1-7-7c0-3.5 2.5-6.5 6-7.5l1.5 1.5"/><path d="M19 21v-4"/></svg>
+                            </div>
+                            <h3 style="font-size:24px; margin-bottom:20px;">L'Éthique</h3>
+                            <p style="opacity:0.7;">Nous privilégions les fibres naturelles et le coton local pour minimiser notre empreinte et soutenir l'économie de proximité.</p>
+                        </div>
+                        <div class="reveal-scale" style="background:var(--white); padding:60px 40px; border-radius:40px; border:1px solid var(--parchment); text-align:center; transition-delay: 0.2s;">
+                            <div style="width:80px; height:80px; background:var(--parchment); border-radius:50%; display:flex; align-items:center; justify-content:center; margin: 0 auto 30px; color:var(--terracotta);">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            </div>
+                            <h3 style="font-size:24px; margin-bottom:20px;">La Patience</h3>
+                            <p style="opacity:0.7;">Chaque pièce est une célébration de la lenteur. Il faut parfois des jours de travail minutieux pour une seule création.</p>
+                        </div>
+                        <div class="reveal-scale" style="background:var(--white); padding:60px 40px; border-radius:40px; border:1px solid var(--parchment); text-align:center; transition-delay: 0.4s;">
+                            <div style="width:80px; height:80px; background:var(--parchment); border-radius:50%; display:flex; align-items:center; justify-content:center; margin: 0 auto 30px; color:var(--terracotta);">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                            </div>
+                            <h3 style="font-size:24px; margin-bottom:20px;">L'Excellence</h3>
+                            <p style="opacity:0.7;">Une rigueur technique absolue pour des finitions invisibles et une durabilité qui défie le temps.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STORY SECTION -->
+            <section class="section-padding" style="background: var(--linen); position: relative;">
+                <img src="images/yarn_illus.png" class="illus-decor illus-3" style="top:50%; left:-5%; opacity:0.1; transform:translateY(-50%) rotate(20deg);" alt="Yarn">
+                <div class="container">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:100px; align-items:center;" class="grid-2-col-resp">
+                        <div class="reveal">
+                            <div style="position:relative; padding:20px;">
+                                <div style="position:absolute; inset:0; background:var(--blush); border-radius:50px; transform:rotate(-3deg); opacity:0.1; z-index:0;"></div>
+                                <img src="images/maria-kovalets-RgEaD36YYGI-unsplash.jpg" style="width:100%; border-radius:40px; position:relative; z-index:1; box-shadow: 0 40px 80px rgba(61,43,31,0.12);" alt="Mia's Workshop">
+                            </div>
+                        </div>
+                        <div class="reveal">
+                            <span class="tagline">Notre Vision</span>
+                            <h2 style="font-size: clamp(36px, 5vw, 54px); margin-bottom: 30px;">Le retour au <span class="underline">vrai</span>.</h2>
+                            <p style="margin-bottom:24px; font-size:18px; line-height:1.8;">À Cotonou, dans notre petit atelier baigné de lumière, nous réinventons le crochet. Ce n'est plus seulement une technique d'hier, c'est le design de demain : organique, sculptural et profondément humain.</p>
+                            <p style="margin-bottom:40px; opacity:0.8;">Chaque fil qui passe entre nos mains raconte l'histoire d'un engagement pour une mode qui respecte celui qui la fait et celle qui la porte.</p>
+                             <div style="display:flex; gap:40px; align-items:center;">
+                                <div class="reveal-blur">
+                                    <span style="display:block; font-size:40px; font-weight:800; color:var(--terracotta);">100%</span>
+                                    <span style="font-size:12px; text-transform:uppercase; letter-spacing:1px; opacity:0.6;">Fait-Main</span>
+                                </div>
+                                <div class="reveal-blur" style="transition-delay:0.2s;">
+                                    <span style="display:block; font-size:40px; font-weight:800; color:var(--terracotta);">500+</span>
+                                    <span style="font-size:12px; text-transform:uppercase; letter-spacing:1px; opacity:0.6;">Heures / Mois</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA -->
+            <section class="section-padding">
+                <div class="container">
+                    <div style="background:var(--bark); border-radius:60px; padding:100px 40px; text-align:center; color:var(--linen); position:relative; overflow:hidden;" class="reveal-scale">
+                        <div style="position:absolute; inset:0; background: radial-gradient(circle at 70% 30%, rgba(192, 92, 68, 0.1), transparent 50%);"></div>
+                        <h2 style="font-size:clamp(40px, 6vw, 64px); margin-bottom:32px; position:relative; z-index:1;">Prêt à adopter une <br><span style="color:var(--blush)">pièce unique</span> ?</h2>
+                        <button class="btn-atypique" onclick="navigate('boutique')" style="background:var(--linen); color:var(--bark); position:relative; z-index:1;">Explorer la collection</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- CONTACT -->
+        <div id="page-contact" class="page">
+            <section class="section-padding">
+                <div class="container">
+                    <div style="display:grid; grid-template-columns: 1fr 400px; gap:80px; align-items:start;">
+                        <div class="reveal-blur">
+                            <h2 style="font-size:clamp(40px, 6vw, 72px); margin-bottom:40px; line-height:1.1;">Dites-nous <span class="underline">tout</span>.</h2>
+                            <p style="font-size:20px; opacity:0.7; margin-bottom:60px; max-width:600px;">Que ce soit pour une commande personnalisée, une question sur nos ateliers ou juste un mot doux, nous vous répondrons avec plaisir.</p>
+                            
+                            <form id="contact-form" class="premium-form contact-form-resp" onsubmit="sendWhatsAppMessage(event)">
+                                <div class="contact-inputs-grid" style="display:grid; grid-template-columns: 1fr 1fr; gap:30px; margin-bottom:30px;">
+                                    <div class="input-group">
+                                        <label>Votre Nom</label>
+                                        <input type="text" id="contact-name" placeholder="Ex: Sarah" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Votre Email</label>
+                                        <input type="email" id="contact-email" placeholder="Ex: sarah@email.com" required>
+                                    </div>
+                                </div>
+                                <div class="input-group" style="margin-bottom:40px;">
+                                    <label>Votre Message</label>
+                                    <textarea id="contact-message" placeholder="Décrivez votre projet ou posez vos questions..." rows="8" required></textarea>
+                                </div>
+                                <button type="submit" class="btn-atypique contact-submit-btn" style="width:100%; justify-content:center; padding:24px;">Envoyer le message</button>
+                            </form>
+                        </div>
+
+                        <div class="reveal-scale" id="order-summary-card" style="display:none;">
+                            <div style="background:var(--parchment); padding:40px; border-radius:40px; border:1px solid var(--blush); position:sticky; top:120px;">
+                                <h3 style="font-size:24px; margin-bottom:30px; display:flex; align-items:center; gap:12px;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                                    Récapitulatif
+                                </h3>
+                                <div id="summary-content"></div>
+                                <div style="margin-top:30px; padding-top:30px; border-top:1px solid rgba(61,43,31,0.1); font-weight:800; font-size:20px; display:flex; justify-content:space-between;">
+                                    <span>Total estimé</span>
+                                    <span id="summary-total" style="color:var(--terracotta);">0 FCFA</span>
+                                </div>
+                                <p style="font-size:12px; opacity:0.5; margin-top:20px; line-height:1.4;">* Les frais de livraison seront calculés après confirmation de votre adresse.</p>
+                            </div>
+                        </div>
+
+                        <div class="reveal-scale" id="general-contact-card">
+                            <div style="background:var(--linen); padding:40px; border-radius:40px; position:sticky; top:120px;">
+                                <h3 style="font-size:24px; margin-bottom:24px;">Contact Direct</h3>
+                                <div style="display:grid; gap:24px;">
+                                    <div style="display:flex; gap:16px;">
+                                        <div style="width:48px; height:48px; border-radius:50%; background:var(--white); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                        </div>
+                                        <div>
+                                            <strong style="display:block; font-size:14px; opacity:0.5; text-transform:uppercase;">Téléphone</strong>
+                                            <p>+229 01 51 87 58 85</p>
+                                        </div>
+                                    </div>
+                                    <div style="display:flex; gap:16px;">
+                                        <div style="width:48px; height:48px; border-radius:50%; background:var(--white); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                                        </div>
+                                        <div>
+                                            <strong style="display:block; font-size:14px; opacity:0.5; text-transform:uppercase;">Sur-mesure</strong>
+                                            <p>mia@crochet.com</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- OVERLAYS -->
+    <div class="overlay" id="overlay-cart">
+        <div class="cart-panel">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:50px;">
+                <h3 style="font-size:32px;">Panier</h3>
+                <button onclick="toggleOverlay('cart', false)" style="font-size:30px;">×</button>
+            </div>
+            <div id="cart-list" style="flex:1; overflow-y:auto; display:grid; gap:24px; align-content:start;"></div>
+            <div style="padding-top:40px; border-top:1px solid var(--parchment); margin-top:40px;">
+                <div style="display:flex; justify-content:space-between; font-weight:800; font-size:24px; margin-bottom:32px;">
+                    <span>Total</span>
+                    <span id="cart-total">0 FCFA</span>
+                </div>
+                <button class="btn-atypique" style="width:100%; justify-content:center;" onclick="checkoutCart()">Commander via Message</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay-modal">
+        <div class="modal-content" id="modal-body"></div>
+    </div>
+
+    <div class="overlay" id="overlay-lightbox" onclick="toggleOverlay('lightbox', false)">
+        <img src="" id="lightbox-img">
+    </div>
+
+    <footer id="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="reveal-blur">
+                    <a href="#" class="logo-link footer-logo" onclick="navigate('home', event)" style="margin-bottom:30px; display:block;">
+                        <img src="logo_mia's.png" alt="Mia's Crochet Boutique" class="logo-img" style="filter: brightness(0) invert(1); height:100px;">
+                    </a>
+                    <p style="opacity:0.9; margin-bottom:30px; max-width:300px; color:var(--white);">Artisanat textile poétique et créations au crochet faites main avec amour à Cotonou, Bénin.</p>
+                    <div style="display:flex; gap:20px;">
+                        <a href="#" class="footer-social-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                        </a>
+                        <a href="#" class="footer-social-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        </a>
+                        <a href="#" class="footer-social-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="18" y1="6" y2="18"/><line x1="6" x2="18" y1="18" y2="6"/></svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="reveal-blur footer-nav-block" style="transition-delay:0.2s;">
+                    <h4 style="margin-bottom:30px; font-size:14px; text-transform:uppercase; letter-spacing:2px; font-weight:800; color:var(--blush);">Navigation</h4>
+                    <nav style="display:grid; gap:16px;">
+                        <a href="#" class="footer-link" onclick="navigate('home', event)">Accueil</a>
+                        <a href="#" class="footer-link" onclick="navigate('boutique', event)">Boutique</a>
+                        <a href="#" class="footer-link" onclick="navigate('galerie', event)">Galerie</a>
+                        <a href="#" class="footer-link" onclick="navigate('services', event)">Services</a>
+                        <a href="#" class="footer-link" onclick="navigate('about', event)">L'Atelier</a>
+                    </nav>
+                </div>
+
+                <div class="reveal-blur" style="transition-delay:0.4s;">
+                    <h4 style="margin-bottom:30px; font-size:14px; text-transform:uppercase; letter-spacing:2px; font-weight:800; color:var(--blush);">Contact</h4>
+                    <div style="display:grid; gap:20px; opacity:0.8;">
+                        <div style="display:flex; gap:12px; align-items:center;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--blush)"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                            <span>Cotonou, Bénin<br>Quartier Haie Vive</span>
+                        </div>
+                        <div style="display:flex; gap:12px; align-items:center;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--blush)"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            <span>+229 01 51 87 58 85</span>
+                        </div>
+                        <div style="display:flex; gap:12px; align-items:center;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--blush)"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                            <span>bonjour@miascrochet.com</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal-blur" style="transition-delay:0.6s;">
+                    <h4 style="margin-bottom:30px; font-size:14px; text-transform:uppercase; letter-spacing:2px; font-weight:800; color:var(--blush);">Newsletter</h4>
+                    <p style="opacity:0.9; font-size:14px; margin-bottom:20px; color:var(--white);">Inscrivez-vous pour recevoir nos nouvelles <br> collections et dates d'ateliers.</p>
+                    <form class="newsletter-form" onsubmit="alert('Merci de votre inscription !'); return false;">
+                        <input type="email" placeholder="Votre email..." required>
+                        <button type="submit">OK</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div style="margin-top: 100px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #ffffff;">
+                <p style="opacity: 1; color: #ffffff !important;">&copy; 2026 Mia's Crochet Boutique. Tissé avec passion.</p>
+                <div style="display:flex; gap:24px;">
+                    <a href="#" style="color:var(--white); opacity:1;">Mentions Légales</a>
+                    <a href="#" style="color:var(--white); opacity:1;">Politique de confidentialité</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
